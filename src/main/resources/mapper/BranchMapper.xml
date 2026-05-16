@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wu.web.mapper.BranchMapper">
+    <resultMap id="BaseResultMap" type="com.wu.web.model.Branch">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="bankcode" property="bankcode" jdbcType="VARCHAR"/>
+        <result column="branchcode" property="branchcode" jdbcType="VARCHAR"/>
+        <result column="branchname" property="branchname" jdbcType="VARCHAR"/>
+        <result column="locationcode" property="locationcode" jdbcType="VARCHAR"/>
+        <result column="locationname" property="locationname" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="addBranch" parameterType="com.wu.web.model.Branch">
+        insert into branch (bankcode, branchcode, branchname, locationcode, locationname)
+        values(#{bankcode}, #{branchcode}, #{branchname}, #{locationcode}, #{locationname});
+    </insert>
+</mapper>
