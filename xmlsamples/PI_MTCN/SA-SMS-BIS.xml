@@ -1,0 +1,122 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrsi="http://www.westernunion.com/schema/xrsi">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xrsi:esp-send-money-store-request>
+         <partner>
+            <id>WGBSSAAP00T</id>
+            <system>
+               <id>WGBSSAAP00T</id>
+               <name>STC</name>
+               <version>9101</version>
+               <ip_address>10.10.10.10</ip_address>
+               <connector>
+                  <id>SAAP0EMT001A</id>
+               </connector>
+            </system>
+         </partner>
+         <device>
+            <id>WALLET</id>
+            <type>WALLET</type>
+         </device>
+         <external_reference_no>1</external_reference_no>
+         <sender>
+            <name>
+               <first_name>LOGESH</first_name>
+               <last_name>SHANMUGAM</last_name>
+            </name>
+            <address>
+               <addr_line1>99999 RIYADH SA</addr_line1>
+               <city>RIYADH</city>
+               <postal_code>99999</postal_code>
+               <country_iso_code>SA</country_iso_code>
+            </address>
+            <compliance_details>
+               <template_id>SAU_01_S</template_id>
+               <id_documents>
+                  <id_document>
+                     <type>NATIONAL_ID</type>
+                     <data>27901014</data>
+                     <issue_country>
+                        <iso_code>
+                           <country_code>SA</country_code>
+                        </iso_code>
+                     </issue_country>
+                     <expiration_date>12122022</expiration_date>
+                     <id_expires>true</id_expires>
+                  </id_document>
+               </id_documents>
+               <date_of_birth>01101990</date_of_birth>
+               <transaction_reason>Family Support</transaction_reason>
+               <Country_of_Birth>South Arabia</Country_of_Birth>
+               <nationality>Indian</nationality>
+               <ack_flag>1</ack_flag>
+            </compliance_details>
+            <email>test1@gmail.com</email>
+            <contact_phone>97056789103</contact_phone>
+            <mobile_phone>
+               <phone_number>
+                  <country_code>970</country_code>
+                  <national_number>56789103</national_number>
+               </phone_number>
+            </mobile_phone>
+            <bank_account>
+               <name>STC</name>
+               <account_number>12348796</account_number>
+               <account_type>savings</account_type>
+            </bank_account>
+         </sender>
+         <receiver>
+            <name>
+               <first_name>NIRANJAN KARTHICK</first_name>
+               <last_name>YUVAN KRISHNA</last_name>
+            </name>
+            <address>
+               <addr_line1>1225 11th Main</addr_line1>
+               <city>Bangkok</city>
+               <country_iso_code>TH</country_iso_code>
+            </address>
+         </receiver>
+         <wu_product>
+            <name>MONEY IN MINUTES</name>
+            <code>000</code>
+            <routing_code/>
+         </wu_product>
+         <transaction_type>WMN</transaction_type>
+         <payment_details>
+            <origination>
+               <principal_amount>200000</principal_amount>
+               <gross_amount>200431</gross_amount>
+               <currency_iso_code>SAR</currency_iso_code>
+               <country_iso_code>SA</country_iso_code>
+            </origination>
+            <destination>
+               <expected_payout_amount>1628871</expected_payout_amount>
+               <currency_iso_code>THB</currency_iso_code>
+               <country_iso_code>TH</country_iso_code>
+               <state_code/>
+               <city/>
+            </destination>
+            <promotion>
+               <name>Half base off</name>
+               <code>A0027-</code>
+               <description>T3001 Valid promotion with discount.</description>
+               <discount>375</discount>
+               <message>A0027 Special 50% Off Charges Intro</message>
+            </promotion>
+            <taxes>
+               <state_tax>56</state_tax>
+            </taxes>
+            <fees>
+               <base_charges>375</base_charges>
+               <delivery_charges>0</delivery_charges>
+               <other_charges>0</other_charges>
+            </fees>
+            <exchange_rate>8.1443554</exchange_rate>
+            <identification_question/>
+         </payment_details>
+         <temp_transaction_id>2014804079125124</temp_transaction_id>
+         <transaction_digest>45C94CCF22CC637665039447E97B30F47578A2EF</transaction_digest>
+         <host_based_taxes>Y</host_based_taxes>
+      </xrsi:esp-send-money-store-request>
+   </soapenv:Body>
+</soapenv:Envelope>

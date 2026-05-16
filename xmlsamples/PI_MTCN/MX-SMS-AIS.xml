@@ -1,0 +1,128 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrsi="http://www.westernunion.com/schema/xrsi">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xrsi:send-money-store-request>
+         <channel>
+            <type>H2H</type>
+            <name>ESP</name>
+            <version>9500</version>
+         </channel>
+         <sender>
+            <name name_type="M">
+               <given_name>HARI</given_name>
+               <paternal_name>PANNEER</paternal_name>
+               <maternal_name>SELVAM</maternal_name>
+            </name>
+            <address>
+               <addr_line1>ASFJALSKJ</addr_line1>
+               <city>ABASOLO</city>
+               <state>TAMAULIPAS</state>
+               <postal_code>82749</postal_code>
+               <country_code>
+                  <iso_code>
+                     <country_code>MX</country_code>
+                     <currency_code>MXN</currency_code>
+                  </iso_code>
+                  <country_name>CHINA</country_name>
+               </country_code>
+            </address>
+            <compliance_details>
+               <compliance_data_buffer>0108MEX_05_S0201A0311512035689740606MEXICO0708010119880808COMMERCE1008311220509901X3306MEXICO3406MEXICO3501M7401N</compliance_data_buffer>
+            </compliance_details>
+            <contact_phone>528845754321</contact_phone>
+            <mobile_phone>
+               <phone_number/>
+            </mobile_phone>
+         </sender>
+         <receiver>
+            <name name_type="D">
+               <first_name>JIAXIN</first_name>
+               <last_name>CHEN</last_name>
+            </name>
+            <address>
+               <addr_line1>2ND AVENUE</addr_line1>
+               <city>CHURCH PARK STREET</city>
+               <state>SEOUL</state>
+               <postal_code>82749</postal_code>
+               <country_code>
+                  <iso_code>
+                     <country_code>CN</country_code>
+                     <currency_code>USD</currency_code>
+                  </iso_code>
+                  <country_name>CHINA</country_name>
+               </country_code>
+               <address_type>I</address_type>
+            </address>
+            <mobile_phone>
+               <phone_number/>
+            </mobile_phone>
+         </receiver>
+         <payment_details>
+            <expected_payout_location>
+               <state_code>FL</state_code>
+            </expected_payout_location>
+            <recording_country_currency>
+               <iso_code>
+                  <country_code>MX</country_code>
+                  <currency_code>MXN</currency_code>
+               </iso_code>
+            </recording_country_currency>
+            <destination_country_currency>
+               <iso_code>
+                  <country_code>CN</country_code>
+                  <currency_code>USD</currency_code>
+               </iso_code>
+            </destination_country_currency>
+            <originating_country_currency>
+               <iso_code>
+                  <country_code>MX</country_code>
+                  <currency_code>MXN</currency_code>
+               </iso_code>
+            </originating_country_currency>
+            <originating_city>TARIMORO</originating_city>
+            <originating_state>GU</originating_state>
+            <transaction_type>WMF</transaction_type>
+            <payment_type>Cash</payment_type>
+            <exchange_rate>0.0425424</exchange_rate>
+            <fix_on_send>Y</fix_on_send>
+            <pay_wo_id_indicator>N</pay_wo_id_indicator>
+            <credit_debit_card_details>
+               <authorization_code/>
+            </credit_debit_card_details>
+            <duplicate_detection_flag>D</duplicate_detection_flag>
+         </payment_details>
+         <financials>
+            <taxes>
+               <municipal_tax>0</municipal_tax>
+               <state_tax>0</state_tax>
+               <county_tax>0</county_tax>
+            </taxes>
+            <originators_principal_amount>117600</originators_principal_amount>
+            <destination_principal_amount>5000</destination_principal_amount>
+            <gross_total_amount>130531</gross_total_amount>
+            <plus_charges_amount>0</plus_charges_amount>
+            <charges>12931</charges>
+            <message_charge>0</message_charge>
+         </financials>
+         <delivery_services>
+            <code>000</code>
+            <message>
+               <message_details context="5">
+                  <text>HI..HOW ARE YOU</text>
+                  <text>HI..HOW ARE YOU</text>
+                  <text>HI..HOW ARE YOU</text>
+                  <text>HI..HOW ARE YOU</text>
+                  <text>HI..HOW ARE YOU</text>
+               </message_details>
+            </message>
+         </delivery_services>
+         <mtcn>6049111915</mtcn>
+         <new_mtcn>2018086049111915</new_mtcn>
+         <foreign_remote_system>
+            <identifier>WGHHMX01P0T</identifier>
+            <reference_no>20001287</reference_no>
+            <counter_id>MX01PPT013A</counter_id>
+         </foreign_remote_system>
+      </xrsi:send-money-store-request>
+   </soapenv:Body>
+</soapenv:Envelope>

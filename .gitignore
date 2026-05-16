@@ -1,9 +1,8 @@
 .idea/
 .mvn/
-DAS/
-logs/
-MTCN/
-Pricing/
-testdata/
-target/
-xmlsamples/
+/DAS/
+/logs/
+/MTCN/
+/Pricing/
+/testdata/
+/target/

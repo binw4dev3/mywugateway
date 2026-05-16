@@ -1,0 +1,39 @@
+<soapenv:Envelope xmlns:xrsi="http://www.westernunion.com/schema/xrsi" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns2:esp-fee-inquiry-request xmlns:ns2="http://www.westernunion.com/schema/xrsi">
+         <partner>
+            <id>WGBSDE5840P</id>
+            <system>
+               <id>WGBSDE5840P</id>
+               <name>KTB BANK</name>
+               <version>9101</version>
+               <ip_address>192.168.49.20</ip_address>
+               <connector>
+                  <id>DE584PST001A</id>
+               </connector>
+            </system>
+         </partner>
+         <device>
+            <id>Online</id>
+            <type>RETAIL</type>
+         </device>
+         <external_reference_no>1</external_reference_no>
+         <transaction_type>WMN</transaction_type>
+         <payment_details>
+            <origination>
+               <principal_amount>100000</principal_amount>
+               <currency_iso_code>EUR</currency_iso_code>
+               <country_iso_code>DE</country_iso_code>
+            </origination>
+            <destination>
+               <currency_iso_code>EUR</currency_iso_code>
+               <country_iso_code>DE</country_iso_code>
+               <state_code>NJ</state_code>
+               <city>Jersy city</city>
+            </destination>
+         </payment_details>
+         <host_based_taxes>Y</host_based_taxes>
+      </ns2:esp-fee-inquiry-request>
+   </soapenv:Body>
+</soapenv:Envelope>

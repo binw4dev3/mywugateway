@@ -1,0 +1,43 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrsi="http://www.westernunion.com/schema/xrsi">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xrsi:esp-fee-inquiry-request>
+         <partner>
+            <id>WGBSKR9910P</id>
+            <system>
+               <id>WGBSKR9910P</id>
+               <name>GME</name>
+               <version>9101</version>
+               <ip_address>172.31.19.212</ip_address>
+               <connector>
+                  <id>KR991EMP001D</id>
+               </connector>
+            </system>
+         </partner>
+         <device>
+            <id>BM</id>
+            <type>MOBILE</type>
+         </device>
+         <external_reference_no>ABCTESTREF123</external_reference_no>
+         <sender>
+            <name name_type="D">
+               <first_name>Bin</first_name>
+               <last_name>Wang</last_name>
+            </name>
+         </sender>
+         <transaction_type>WMN</transaction_type>
+         <payment_details>
+            <origination>
+               <principal_amount>12550</principal_amount>
+               <currency_iso_code>USD</currency_iso_code>
+               <country_iso_code>KR</country_iso_code>
+            </origination>
+            <destination>
+               <expected_payout_amount>0</expected_payout_amount>
+               <currency_iso_code>CNY</currency_iso_code>
+               <country_iso_code>CN</country_iso_code>
+            </destination>
+         </payment_details>
+      </xrsi:esp-fee-inquiry-request>
+   </soapenv:Body>
+</soapenv:Envelope>

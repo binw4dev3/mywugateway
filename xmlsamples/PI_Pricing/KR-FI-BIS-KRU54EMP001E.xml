@@ -1,0 +1,36 @@
+<soapenv:Envelope xmlns:xrsi="http://www.westernunion.com/schema/xrsi" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xrsi:esp-fee-inquiry-request>
+         <partner>
+            <id>WGBSKRU540T</id>
+            <system>
+               <id>WGBSKRU540P</id>
+               <name>Finshot</name>
+               <version>9101</version>
+               <ip_address>175.193.239.90</ip_address>
+               <connector>
+                  <id>KRU54EMP001E</id>
+               </connector>
+            </system>
+         </partner>
+         <device>
+            <id>BM</id>
+            <type>MOBILE</type>
+            <cust_entry_device>DIGITALPARTNER</cust_entry_device>
+         </device>
+         <transaction_type>WMN</transaction_type>
+         <payment_details>
+            <origination>
+               <principal_amount>100</principal_amount>
+               <currency_iso_code>USD</currency_iso_code>
+               <country_iso_code>KR</country_iso_code>
+            </origination>
+            <destination>
+               <currency_iso_code>VND</currency_iso_code>
+               <country_iso_code>VN</country_iso_code>
+            </destination>
+         </payment_details>
+      </xrsi:esp-fee-inquiry-request>
+   </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,36 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrsi="http://www.westernunion.com/schema/xrsi">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns2:esp-fee-inquiry-request xmlns:ns2="http://www.westernunion.com/schema/xrsi">
+         <partner>
+            <id>WGBSKRAP30P</id>
+            <system>
+               <id>WGBSKRAP30P</id>
+               <name>Shinhan Bank</name>
+               <version>9101</version>
+               <ip_address>10.1.40.181</ip_address>
+               <connector>
+                  <id>YX360036</id>
+               </connector>
+            </system>
+         </partner>
+         <device>
+            <id>BM</id>
+            <type>MOBILE</type>
+         </device>
+         <transaction_type>WMN</transaction_type>
+         <payment_details>
+            <origination>
+               <principal_amount>1000</principal_amount>
+               <currency_iso_code>USD</currency_iso_code>
+               <country_iso_code>KR</country_iso_code>
+            </origination>
+            <destination>
+               <expected_payout_amount>0</expected_payout_amount>
+               <currency_iso_code>USD</currency_iso_code>
+               <country_iso_code>MN</country_iso_code>
+            </destination>
+         </payment_details>
+      </ns2:esp-fee-inquiry-request>
+   </soapenv:Body>
+</soapenv:Envelope>

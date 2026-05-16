@@ -1,0 +1,26 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrsi="http://www.westernunion.com/schema/xrsi" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xrsi:h2h-das-request>
+         <channel>
+            <type>H2H</type>
+            <name>agent</name>
+            <version>9500</version>
+         </channel>
+         <foreign_remote_system>
+            <identifier>WGHHKR4470P</identifier>
+            <reference_no>29997000141024240</reference_no>
+            <counter_id>KR447TT0001A</counter_id>
+         </foreign_remote_system>
+         <client_id>H2H</client_id>
+         <name>GetCountriesCurrencies</name>
+         <account_num>AHH384478</account_num>
+         <filters>
+            <queryfilter1>en</queryfilter1>
+            <queryfilter2>KR USD</queryfilter2>
+            <queryfilter3>St. Thomas</queryfilter3>
+            <queryfilter4>US Dollar</queryfilter4>
+         </filters>
+      </xrsi:h2h-das-request>
+   </soapenv:Body>
+</soapenv:Envelope>

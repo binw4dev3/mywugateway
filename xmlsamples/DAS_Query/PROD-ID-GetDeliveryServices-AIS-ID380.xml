@@ -1,0 +1,24 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrsi="http://www.westernunion.com/schema/xrsi" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xrsi:h2h-das-request>
+         <channel>
+            <type>H2H</type>
+            <name>PTPOS</name>
+            <version>9500</version>
+         </channel>
+         <foreign_remote_system>
+            <identifier>WGHHID3801P</identifier>
+            <reference_no>925530</reference_no>
+            <counter_id>40114A0</counter_id>
+         </foreign_remote_system>
+         <name>GetDeliveryServices</name>
+         <filters>
+            <queryfilter1>en</queryfilter1>
+            <queryfilter2>ID IDR</queryfilter2>
+            <queryfilter3>PH PHP</queryfilter3>
+            <queryfilter4>ALL</queryfilter4>
+         </filters>
+      </xrsi:h2h-das-request>
+   </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,113 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+   <env:Header/>
+   <S:Body>
+      <ns0:send-money-store-request xmlns:ns0="http://www.westernunion.com/schema/xrsi">
+         <device>
+            <id>GJZFQZ02</id>
+            <type>RETAIL</type>
+         </device>
+         <channel>
+            <type>H2H</type>
+            <name>PSBC</name>
+            <version>9500</version>
+         </channel>
+         <sender>
+            <name name_type="D">
+               <first_name>yinyin</first_name>
+               <last_name>wang</last_name>
+            </name>
+            <address>
+               <addr_line1>No.3 finacial street</addr_line1>
+               <city>Beijing Xicheng</city>
+               <state>Beijing</state>
+               <postal_code>100808</postal_code>
+               <country_code>
+                  <iso_code>
+                     <country_code>CN</country_code>
+                     <currency_code>USD</currency_code>
+                  </iso_code>
+               </country_code>
+            </address>
+            <compliance_details>
+               <compliance_data_buffer>0108CHN_01_S0201B03183508021987103015220405CHINA0605CHINA0708301019870820Network Professional1008260720239901X3302CN3402CN3501F</compliance_data_buffer>
+            </compliance_details>
+            <contact_phone>13581545226</contact_phone>
+            <gender>F</gender>
+            <date_of_birth>30101987</date_of_birth>
+            <fraud_warning_consent>Y</fraud_warning_consent>
+         </sender>
+         <receiver>
+            <name name_type="D">
+               <first_name>Chung ki</first_name>
+               <last_name>Kwan</last_name>
+            </name>
+            <address>
+               <addr_line1>testtest123456</addr_line1>
+               <city>seoul</city>
+               <state>se</state>
+               <postal_code>123654</postal_code>
+            </address>
+            <contact_phone>13312345632</contact_phone>
+         </receiver>
+         <bank_details>
+            <name>Postal Saving Bank of China</name>
+            <account_number>6210981000008080139</account_number>
+         </bank_details>
+         <promotions>
+            <promo_discount_amount>0</promo_discount_amount>
+         </promotions>
+         <payment_details>
+            <expected_payout_location>
+               <state_code>se</state_code>
+               <state_name>oul</state_name>
+               <city>seoul</city>
+            </expected_payout_location>
+            <recording_country_currency>
+               <iso_code>
+                  <country_code>CN</country_code>
+                  <currency_code>USD</currency_code>
+               </iso_code>
+            </recording_country_currency>
+            <destination_country_currency>
+               <iso_code>
+                  <country_code>KR</country_code>
+                  <currency_code>USD</currency_code>
+               </iso_code>
+            </destination_country_currency>
+            <originating_country_currency>
+               <iso_code>
+                  <country_code>CN</country_code>
+                  <currency_code>USD</currency_code>
+               </iso_code>
+            </originating_country_currency>
+            <originating_city>Beijing Xicheng</originating_city>
+            <originating_state>Beijing</originating_state>
+            <transaction_type>WMN</transaction_type>
+            <payment_type>Cash</payment_type>
+            <duplicate_detection_flag>D</duplicate_detection_flag>
+         </payment_details>
+         <financials>
+            <originators_principal_amount>2500</originators_principal_amount>
+            <destination_principal_amount>2500</destination_principal_amount>
+            <gross_total_amount>4200</gross_total_amount>
+            <plus_charges_amount>0</plus_charges_amount>
+            <charges>1700</charges>
+            <message_charge>0</message_charge>
+            <total_undiscounted_charges>1700</total_undiscounted_charges>
+            <total_discounted_charges>1700</total_discounted_charges>
+         </financials>
+         <delivery_services>
+            <code>000</code>
+         </delivery_services>
+         <mtcn>8979060691</mtcn>
+         <new_mtcn>2001488979060691</new_mtcn>
+         <foreign_remote_system>
+            <identifier>WGHHCNE050T</identifier>
+            <reference_no>29997000123833851</reference_no>
+            <counter_id>CNE05AWT001A</counter_id>
+         </foreign_remote_system>
+      </ns0:send-money-store-request>
+   </S:Body>
+</S:Envelope>
+
+

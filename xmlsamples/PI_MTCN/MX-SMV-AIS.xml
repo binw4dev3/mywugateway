@@ -1,0 +1,120 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrsi="http://www.westernunion.com/schema/xrsi">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xrsi:send-money-validation-request>
+         <device>
+            <id>esew3</id>
+            <type>AGENT</type>
+         </device>
+         <channel>
+            <type>H2H</type>
+            <name>ABC</name>
+            <version>9500</version>
+         </channel>
+         <sender>
+            <name name_type="M">
+               <given_name>HARI</given_name>
+               <paternal_name>PANNEER</paternal_name>
+               <maternal_name>SELVAM</maternal_name>
+            </name>
+            <address>
+               <addr_line1>ASFJALSKJ</addr_line1>
+               <city>ABASOLO</city>
+               <state>TAMAULIPAS</state>
+               <postal_code>82749</postal_code>
+               <country_code>
+                  <iso_code>
+                     <country_code>CN</country_code>
+                     <currency_code>USD</currency_code>
+                  </iso_code>
+                  <country_name>CHINA</country_name>
+               </country_code>
+            </address>
+            <compliance_details>
+               <template_id>MEX_05_s</template_id>
+               <id_details>
+                  <id_type>A</id_type>
+                  <id_country_of_issue>MEXICO</id_country_of_issue>
+                  <id_number>51203568974</id_number>
+               </id_details>
+               <id_expiration_date>31122050</id_expiration_date>
+               <date_of_birth>01011988</date_of_birth>
+               <occupation>COMMERCE</occupation>
+               <Country_of_Birth>MEXICO</Country_of_Birth>
+               <nationality>MEXICO</nationality>
+               <Gender>M</Gender>
+               <Does_the_ID_have_an_expiration_date>N</Does_the_ID_have_an_expiration_date>
+               <ack_flag>X</ack_flag>
+            </compliance_details>
+            <contact_phone>528845754321</contact_phone>
+         </sender>
+         <receiver>
+            <name name_type="D">
+               <first_name>JIAXIN</first_name>
+               <last_name>CHEN</last_name>
+            </name>
+            <address>
+               <addr_line1>2ND AVENUE</addr_line1>
+               <city>CHURCH PARK STREET</city>
+               <state>SEOUL</state>
+               <postal_code>82749</postal_code>
+               <country_code>
+                  <iso_code>
+                     <country_code>CN</country_code>
+                     <currency_code>USD</currency_code>
+                  </iso_code>
+                  <country_name>Korea</country_name>
+               </country_code>
+            </address>
+         </receiver>
+         <payment_details>
+            <expected_payout_location>
+               <state_code>FL</state_code>
+            </expected_payout_location>
+            <recording_country_currency>
+               <iso_code>
+                  <country_code>MX</country_code>
+                  <currency_code>MXN</currency_code>
+               </iso_code>
+            </recording_country_currency>
+            <destination_country_currency>
+               <iso_code>
+                  <country_code>CN</country_code>
+                  <currency_code>USD</currency_code>
+               </iso_code>
+            </destination_country_currency>
+            <originating_country_currency>
+               <iso_code>
+                  <country_code>MX</country_code>
+                  <currency_code>MXN</currency_code>
+               </iso_code>
+            </originating_country_currency>
+            <transaction_type>WMF</transaction_type>
+            <payment_type>Cash</payment_type>
+            <pay_wo_id_indicator>N</pay_wo_id_indicator>
+            <duplicate_detection_flag>D</duplicate_detection_flag>
+         </payment_details>
+         <financials>
+            <!--originators_principal_amount>5000</originators_principal_amount-->
+            <destination_principal_amount>5000</destination_principal_amount>
+         </financials>
+         <delivery_services>
+            <code>000</code>
+            <message>
+               <message_details context="5">
+                  <text>HI..HOW ARE YOU</text>
+                  <text>HI..HOW ARE YOU</text>
+                  <text>HI..HOW ARE YOU</text>
+                  <text>HI..HOW ARE YOU</text>
+                  <text>HI..HOW ARE YOU</text>
+               </message_details>
+            </message>
+         </delivery_services>
+         <foreign_remote_system>
+            <identifier>WGHHMX01P0T</identifier>
+            <reference_no>20001287</reference_no>
+            <counter_id>MX01PPT013A</counter_id>
+         </foreign_remote_system>
+      </xrsi:send-money-validation-request>
+   </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,30 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrsi="http://www.westernunion.com/schema/xrsi">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xrsi:esp-das-request>
+         <partner>
+            <id>WGBSKR9910P</id>
+            <system>
+               <id>WGBSKR9910P</id>
+               <name>GME</name>
+               <version>9101</version>
+               <ip_address>172.31.19.212</ip_address>
+               <connector>
+                  <id>KR991EMP001D</id>
+               </connector>
+            </system>
+         </partner>
+         <device>
+            <id>BM</id>
+            <type>MOBILE</type>
+         </device>
+         <external_reference_no>ABCTESTREF123</external_reference_no>
+         <name>GetDeliveryOptionTemplate</name>
+         <filters>
+            <queryfilter1>en</queryfilter1>
+            <queryfilter2>CN CNY</queryfilter2>
+            <queryfilter3>4040</queryfilter3>
+         </filters>
+      </xrsi:esp-das-request>
+   </soapenv:Body>
+</soapenv:Envelope>

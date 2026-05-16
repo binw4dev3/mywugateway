@@ -1,0 +1,25 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <ns2:h2h-das-request xmlns:ns2="http://www.westernunion.com/schema/xrsi">
+         <device>
+            <id>GRCBXLHK01</id>
+            <type>AGENT</type>
+         </device>
+         <channel>
+            <type>H2H</type>
+            <name>GRCB</name>
+            <version>9500</version>
+         </channel>
+         <foreign_remote_system>
+            <identifier>WGHHCNK880P</identifier>
+            <reference_no>wu07201911290000</reference_no>
+            <counter_id>GRCB0587</counter_id>
+         </foreign_remote_system>
+         <name>GetCountriesCurrencies</name>
+         <filters>
+            <queryfilter1>en</queryfilter1>
+            <queryfilter2>CN USD</queryfilter2>
+         </filters>
+      </ns2:h2h-das-request>
+   </S:Body>
+</S:Envelope>

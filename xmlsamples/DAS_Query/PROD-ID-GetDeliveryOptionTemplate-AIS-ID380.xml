@@ -1,0 +1,23 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://www.westernunion.com/schema/xrsi">
+   <SOAP-ENV:Body>
+      <ns1:h2h-das-request>
+         <channel>
+            <type>H2H</type>
+            <name>PTPOS</name>
+            <version>9500</version>
+         </channel>
+         <foreign_remote_system>
+            <identifier>WGHHID3801P</identifier>
+            <reference_no>925530</reference_no>
+            <counter_id>40114A0</counter_id>
+         </foreign_remote_system>
+         <client_id>H2H</client_id>
+         <name>GetDeliveryOptionTemplate</name>
+         <filters>
+            <queryfilter1>en</queryfilter1>
+            <queryfilter2>PH PHP</queryfilter2>
+            <queryfilter3>4210</queryfilter3>
+         </filters>
+      </ns1:h2h-das-request>
+   </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

@@ -1,0 +1,154 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Header/>
+   <S:Body>
+      <ns0:send-money-store-request xmlns:ns0="http://www.westernunion.com/schema/xrsi">
+         <device>
+            <id>AG001</id>
+            <type>AGENT</type>
+         </device>
+         <channel>
+            <type>H2H</type>
+            <name>Golomt</name>
+            <version>9500</version>
+         </channel>
+         <sender>
+            <name name_type="D">
+               <first_name>JINGHUA</first_name>
+               <last_name>ZHANG</last_name>
+            </name>
+            <address>
+               <addr_line1>Mongolia Street 1</addr_line1>
+               <city>MNC</city>
+               <state>MNS</state>
+               <postal_code>123456</postal_code>
+               <country_code>
+                  <iso_code>
+                     <country_code>CN</country_code>
+                     <currency_code>USD</currency_code>
+                  </iso_code>
+               </country_code>
+               <state_zip>123456</state_zip>
+               <street>CHINA Street 1</street>
+            </address>
+            <compliance_details>
+               <template_id>CHN01</template_id>
+               <id_details>
+                  <id_type>A</id_type>
+                  <id_country_of_issue>CHINA</id_country_of_issue>
+                  <id_number>23836182746348232</id_number>
+               </id_details>
+               <id_expiration_date>31122044</id_expiration_date>
+               <date_of_birth>01011973</date_of_birth>
+               <occupation>CONSULTANT</occupation>
+               <Country_of_Birth>CHINA</Country_of_Birth>
+               <nationality>CHINA</nationality>
+               <Gender>F</Gender>
+               <Does_the_ID_have_an_expiration_date>Y</Does_the_ID_have_an_expiration_date>
+               <ack_flag>X</ack_flag>
+            </compliance_details>
+            <contact_phone>010-72621959</contact_phone>
+            <mobile_phone>
+               <phone_number>
+                  <country_code>010</country_code>
+                  <national_number>010-72621959</national_number>
+               </phone_number>
+            </mobile_phone>
+            <bank_details>
+               <name>PSBC</name>
+               <account_number>27291022843507</account_number>
+            </bank_details>
+         </sender>
+         <receiver>
+            <name name_type="D">
+               <first_name>YAN</first_name>
+               <last_name>YANG</last_name>
+            </name>
+            <address>
+               <addr_line1>BEIJINGSHIFEGNTAIQU</addr_line1>
+               <city>Beijing</city>
+               <state>Beijing</state>
+               <postal_code>2346464</postal_code>
+               <country_code>
+                  <iso_code>
+                     <country_code>CN</country_code>
+                     <currency_code>USD</currency_code>
+                  </iso_code>
+               </country_code>
+               <address_type>I</address_type>
+            </address>
+            <contact_phone>156464565</contact_phone>
+            <mobile_phone>
+               <phone_number/>
+            </mobile_phone>
+         </receiver>
+         <!--promotions>
+            <promo_code_description>T3001 Valid promotion with discount.</promo_code_description>
+            <promo_name>A0188 100% OFF CHARGE</promo_name>
+            <promo_message>A0188 - 100% off charge</promo_message>
+            <promo_discount_amount>1700</promo_discount_amount>
+            <sender_promo_code>A0188</sender_promo_code>
+         </promotions-->
+
+         <payment_details>
+            <expected_payout_location>
+               <state_code>BE</state_code>
+               <city>beijing</city>
+            </expected_payout_location>
+            <recording_country_currency>
+               <iso_code>
+                  <country_code>MN</country_code>
+                  <currency_code>USD</currency_code>
+               </iso_code>
+            </recording_country_currency>
+            <destination_country_currency>
+               <iso_code>
+                  <country_code>CN</country_code>
+                  <currency_code>USD</currency_code>
+               </iso_code>
+            </destination_country_currency>
+            <originating_country_currency>
+               <iso_code>
+                  <country_code>MN</country_code>
+                  <currency_code>USD</currency_code>
+               </iso_code>
+            </originating_country_currency>
+            <originating_city>ULAANBAATAR</originating_city>
+            <transaction_type>WMN</transaction_type>
+            <payment_type>Cash</payment_type>
+            <exchange_rate>1.0000000</exchange_rate>
+            <fix_on_send>Y</fix_on_send>
+            <duplicate_detection_flag>D</duplicate_detection_flag>
+         </payment_details>
+         <financials>
+            <taxes>
+               <municipal_tax>0</municipal_tax>
+               <state_tax>0</state_tax>
+               <county_tax>0</county_tax>
+            </taxes>
+            <originators_principal_amount>5000</originators_principal_amount>
+            <destination_principal_amount>5000</destination_principal_amount>
+            <gross_total_amount>6700</gross_total_amount>
+            <plus_charges_amount>0</plus_charges_amount>
+            <charges>1500</charges>
+            <message_charge>0</message_charge>
+         </financials>
+         <delivery_services>
+            <code>000</code>
+            <!--message>
+               <message_details context="3">
+                  <text>ASIA BRIDGE 3</text>
+                  <text>ASIA BRIDGE 3</text>
+                  <text>ASIA BRIDGE 3</text>
+               </message_details>
+            </message-->
+         </delivery_services>
+         <mtcn>9299051983</mtcn>
+         <new_mtcn>1929489299051983</new_mtcn>
+         <foreign_remote_system>
+            <identifier>WGBSMN9990T</identifier>
+            <reference_no>33399988877836</reference_no>
+            <counter_id>MN999EWT001A</counter_id>
+         </foreign_remote_system>
+      </ns0:send-money-store-request>
+   </S:Body>
+</S:Envelope>

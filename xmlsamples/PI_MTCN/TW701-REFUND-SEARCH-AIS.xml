@@ -1,0 +1,33 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xrsi:search-request xmlns:xrsi="http://www.westernunion.com/schema/xrsi">
+         <device>
+            <id>GJZFQZ0X</id>
+            <type>AGENT</type>
+         </device>
+         <channel>
+            <type>H2H</type>
+            <name>KTB</name>
+            <version>9500</version>
+         </channel>
+         <foreign_remote_system>
+            <identifier>WGHHTW7010T</identifier>
+            <reference_no>001CL03223174744</reference_no>
+            <counter_id>TW701PP0001A</counter_id>
+         </foreign_remote_system>
+         <payment_transaction>
+            <payment_details>
+               <originating_country_currency>
+                  <iso_code>
+                     <country_code>TW</country_code>
+                     <currency_code>USD</currency_code>
+                  </iso_code>
+               </originating_country_currency>
+            </payment_details>
+            <mtcn>1219142569</mtcn>
+         </payment_transaction>
+         <search_flag>REFUND</search_flag>
+      </xrsi:search-request>
+   </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,44 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+<s:Body xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns2:esp-fee-inquiry-request xmlns:ns2="http://www.westernunion.com/schema/xrsi">
+        <partner>
+            <id>WGBSKR9981P</id>
+            <system>
+                <id>WGBSKR9981P</id>
+                <name>STC</name>
+                <version>9101</version>
+                <ip_address>10.10.123.13</ip_address>
+                <connector>
+                    <id>KR998SSP000A</id>
+                </connector>
+            </system>
+        </partner>
+        <device>
+            <id>BM</id>
+            <type>MOBILE</type>
+        </device>
+        <external_reference_no xmlns="">f0d969051b5843cd9aff219cfa191411</external_reference_no>
+        <sender>
+            <name>
+                <first_name>PHOEBE</first_name>
+                <last_name>NANTEZA</last_name>
+            </name>
+            <address>
+                <country_iso_code>KR</country_iso_code>
+            </address>
+        </sender>
+        <transaction_type>WMN</transaction_type>
+        <payment_details>
+            <origination>
+                <principal_amount>2000</principal_amount>
+                <currency_iso_code>USD</currency_iso_code>
+                <country_iso_code>KR</country_iso_code>
+            </origination>
+            <destination>
+                <currency_iso_code>CNY</currency_iso_code>
+                <country_iso_code>CN</country_iso_code>
+            </destination>
+        </payment_details>
+    </ns2:esp-fee-inquiry-request>
+</s:Body>
+</s:Envelope>

@@ -1,0 +1,123 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+   <SOAP-ENV:Header/>
+   <S:Body>
+      <ns2:send-money-validation-request xmlns:ns2="http://www.westernunion.com/schema/xrsi">
+         <channel>
+            <type>H2H</type>
+            <name>PSBC</name>
+            <version>9500</version>
+         </channel>
+         <sender>
+            <name name_type="D">
+               <first_name>JINGHUA</first_name>
+               <last_name>ZHANG</last_name>
+            </name>
+            <address>
+               <addr_line1>Mongolia Street 1</addr_line1>
+               <city>MNC</city>
+               <state>MNS</state>
+               <postal_code>123456</postal_code>
+               <country_code>
+                  <iso_code>
+                     <country_code>CN</country_code>
+                     <currency_code>USD</currency_code>
+                  </iso_code>
+               </country_code>
+               <state_zip>123456</state_zip>
+               <street>CHINA Street 1</street>
+            </address>
+            <compliance_details>
+               <template_id>CHN01</template_id>
+               <id_details>
+                  <id_type>A</id_type>
+                  <id_country_of_issue>CHINA</id_country_of_issue>
+                  <id_number>23836182746348232</id_number>
+               </id_details>
+               <id_expiration_date>31122044</id_expiration_date>
+               <date_of_birth>01011973</date_of_birth>
+               <occupation>CONSULTANT</occupation>
+               <Country_of_Birth>CHINA</Country_of_Birth>
+               <nationality>CHINA</nationality>
+               <Gender>F</Gender>
+               <Does_the_ID_have_an_expiration_date>Y</Does_the_ID_have_an_expiration_date>
+               <ack_flag>X</ack_flag>
+            </compliance_details>
+            <contact_phone>010-72621959</contact_phone>
+            <mobile_phone>
+               <phone_number>
+                  <country_code>010</country_code>
+                  <national_number>010-72621959</national_number>
+               </phone_number>
+            </mobile_phone>
+            <bank_details>
+               <name>PSBC</name>
+               <account_number>27291022843507</account_number>
+            </bank_details>
+         </sender>
+         <receiver>
+            <name name_type="D">
+               <first_name>YAN</first_name>
+               <last_name>YANG</last_name>
+            </name>
+            <address>
+               <addr_line1>COMPANY CHINA</addr_line1>
+               <city>Beijing</city>
+               <state>Beijing</state>
+               <postal_code>100000</postal_code>
+               <country_code>
+                  <iso_code>
+                     <country_code>CN</country_code>
+                     <currency_code>USD</currency_code>
+                  </iso_code>
+               </country_code>
+            </address>
+         </receiver>
+         <payment_details>
+            <recording_country_currency>
+               <iso_code>
+                  <country_code>MN</country_code>
+                  <currency_code>USD</currency_code>
+               </iso_code>
+            </recording_country_currency>
+            <destination_country_currency>
+               <iso_code>
+                  <country_code>CN</country_code>
+                  <currency_code>USD</currency_code>
+               </iso_code>
+            </destination_country_currency>
+            <originating_country_currency>
+               <iso_code>
+                  <country_code>MN</country_code>
+                  <currency_code>USD</currency_code>
+               </iso_code>
+            </originating_country_currency>
+            <transaction_type>WMN</transaction_type>
+            <payment_type>Cash</payment_type>
+            <duplicate_detection_flag>D</duplicate_detection_flag>
+         </payment_details>
+         <financials>
+            <originators_principal_amount>5000</originators_principal_amount>
+         </financials>
+         <delivery_services>
+            <code>000</code>
+            <!--message>
+               <message_details context="3">
+                  <text>ASIA BRIDGE 3</text>
+                  <text>ASIA BRIDGE 3</text>
+                  <text>ASIA BRIDGE 3</text>
+               </message_details>
+            </message-->
+         </delivery_services>
+         <!--promotions>
+            <coupons_promotions>A0188</coupons_promotions>
+         </promotions-->
+	
+         
+         <foreign_remote_system>
+            <identifier>WGBSMN9990T</identifier>
+            <reference_no>2387493732928737</reference_no>
+            <counter_id>MN999EWT001A</counter_id>
+         </foreign_remote_system>
+      </ns2:send-money-validation-request>
+   </S:Body>
+</S:Envelope>

@@ -1,0 +1,17 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrsi="http://www.westernunion.com/schema/xrsi" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <xrsi:h2h-das-request>
+         <foreign_remote_system>
+            <identifier>WGWDTWD000T</identifier>
+            <reference_no>WU15101020038813</reference_no>
+            <counter_id>TWD00WDPFP1A</counter_id>
+         </foreign_remote_system>
+         <name>GetCascadeList</name>
+         <filters>
+            <queryfilter1>en</queryfilter1>
+            <queryfilter2>CMBRURUB</queryfilter2>
+         </filters>
+      </xrsi:h2h-das-request>
+   </soapenv:Body>
+</soapenv:Envelope>

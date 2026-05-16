@@ -1,0 +1,36 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrsi="http://www.westernunion.com/schema/xrsi">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns0:esp-fee-inquiry-request xmlns:ns0="http://www.westernunion.com/schema/xrsi">
+         <partner>
+            <id>WGBSKR3730T</id>
+            <system>
+               <id>Demo</id>
+               <name>Demo</name>
+               <version>9101</version>
+               <ip_address>172.31.19.212</ip_address>
+               <connector>
+                  <id>KR373EWP001A</id>
+               </connector>
+            </system>
+         </partner>
+         <device>
+            <id>BC</id>
+            <type>DMAMOB</type>
+         </device>
+         <external_reference_no>1232</external_reference_no>
+         <transaction_type>WMF</transaction_type>
+         <payment_details>
+            <origination>
+               <currency_iso_code>USD</currency_iso_code>
+               <country_iso_code>KR</country_iso_code>
+            </origination>
+            <destination>
+               <expected_payout_amount>1000</expected_payout_amount>
+               <currency_iso_code>PHP</currency_iso_code>
+               <country_iso_code>PH</country_iso_code>
+            </destination>
+         </payment_details>
+      </ns0:esp-fee-inquiry-request>
+   </soapenv:Body>
+</soapenv:Envelope>
