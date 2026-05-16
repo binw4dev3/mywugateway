@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wu.gw.model.PKJsonTxnObject;
 import com.wu.gw.model.PKMTCNPushResponse;
-import com.wu.api.model.ApiResponse;
+import com.wu.web.model.RespBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +23,7 @@ public class PKMTCNPushService {
 
     private static String PK_PUSH_URL = "https://coreyrevuatprxy.prod.wudip.com/cashpak/WWCEWebservicesMTO/api/remittance/sendTransactionCashMto";
 
-    public ApiResponse<Object> pushMTCN(PKJsonTxnObject txnObject) {
+    public RespBean pushMTCN(PKJsonTxnObject txnObject) {
         HttpHeaders headers = new HttpHeaders();
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         ObjectMapper mapper = new ObjectMapper();
@@ -41,11 +41,11 @@ public class PKMTCNPushService {
             Object resp = response.getBody();
             if(resp != null) {
                 System.out.println("resp = " + resp);
-                return ApiResponse.ok("MTCN Pushed.", resp);
+                return RespBean.ok("MTCN Pushed.", resp);
             }
-            return ApiResponse.error("Failed push MTCN : " + txnObject.getTransaction().getMgiTransactionId());
+            return RespBean.error("Failed push MTCN : " + txnObject.getTransaction().getMgiTransactionId());
         } catch (RuntimeException e) {
-            return ApiResponse.error(e.getMessage());
+            return RespBean.error(e.getMessage());
         }
     }
 }
