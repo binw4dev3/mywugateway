@@ -19,7 +19,7 @@ public class OpenApiConfig {
     public OpenAPI wuGatewayOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("WU Gateway API")
+                        .title("Partner DevOps")
                         .description("""
                                 REST API layer for the Western Union Gateway service. \
                                 Exposes all DAS query operations, APN template retrieval, \
