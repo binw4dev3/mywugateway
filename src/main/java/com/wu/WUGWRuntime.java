@@ -1,18 +1,11 @@
 package com.wu;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.KeyManagementException;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import jakarta.annotation.PostConstruct;
 
@@ -23,6 +16,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509KeyManager;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 
@@ -31,12 +26,13 @@ import com.wu.gw.util.UtilFunctions;
 import com.wu.xmlhandler.XMLAssemblerHandler;
 
 /**
- * Gateway Client Runtime Class, to offer essential parameters and properties
- * Singleton instance with a static factory method getInstance()
- *
- * @author Bin Wang
+ * Gateway Client Runtime Class, to offer essential parameters and properties.
+ * Properties are loaded automatically by Spring Boot from application.properties.
  */
 public class WUGWRuntime {
+
+    @Autowired
+    private Environment environment;
 
     private HashMap<String, AbstractServiceRequest> requestMap;
     private XMLAssemblerHandler AISAssemblerHandler;
@@ -63,31 +59,19 @@ public class WUGWRuntime {
     private final Map<String, File> pricingBISMapPI = new HashMap<String, File>();
     private final Map<String, File> pricingAISMapPI = new HashMap<String, File>();
 
-    /*
-     * Properties used for Gateway Client Running; Need to be loaded from properties
-     * files
-     */
-    private Properties utilProps;
-    private String GW_RUNTIME_PROPS_FILE = "classpath:properties/GWRuntimeProps.properties";
-
     public WUGWRuntime() {
     }
 
     @PostConstruct
     public void init() throws Exception {
-        initProperties();
         initSSLContext();
         initParameterMaps();
     }
 
     private void initParameterMaps() {
         try {
-            File xmlDasQuery = ResourceUtils.getFile(utilProps.getProperty("XMLSamplesPath.DAS_Query"));
-            File xmlPIMTCN = ResourceUtils.getFile(utilProps.getProperty("XMLSamplesPath.PI_MTCN"));
-
-            // File xmlSamplesDir =
-            // ResourceUtils.getFile(utilProps.getProperty("XMLSamplesPath") + "/" +
-            // utilProps.getProperty("GWRuntime.env"));
+            File xmlDasQuery = ResourceUtils.getFile(getProperty("XMLSamplesPath.DAS_Query"));
+            File xmlPIMTCN = ResourceUtils.getFile(getProperty("XMLSamplesPath.PI_MTCN"));
 
             /* Retrieve xml samples for DAS Query */
             HashMap<String, File> xmlFileMapDAS = UtilFunctions.scanFiles(xmlDasQuery);
@@ -150,7 +134,6 @@ public class WUGWRuntime {
                     if (keys[1].toUpperCase().equals("REFUND")) {
                         String gwType = keys[3].toUpperCase();
                         String apiType = keys[2].toUpperCase();
-                        String funcType = keys[1].toUpperCase();
                         String naid = keys[0].toUpperCase();
 
                         if (apiType.equals("SEARCH") && gwType.equals("AIS")) {
@@ -163,8 +146,9 @@ public class WUGWRuntime {
             }
 
             /* Retrieve xml samples for Pricing Inquiry */
-            File xmlProdPricing = ResourceUtils.getFile(utilProps.getProperty("XMLSamplesPath.PROD_Pricing"));
-            File xmlPIPricing = ResourceUtils.getFile(utilProps.getProperty("XMLSamplesPath.PI_Pricing"));
+            File xmlProdPricing = ResourceUtils.getFile(getProperty("XMLSamplesPath.PROD_Pricing"));
+            File xmlPIPricing = ResourceUtils.getFile(getProperty("XMLSamplesPath.PI_Pricing"));
+
             HashMap<String, File> xmlFileMapPricingProd = UtilFunctions.scanFiles(xmlProdPricing);
             for (String fileName : xmlFileMapPricingProd.keySet()) {
                 String[] keys = fileName.split("-");
@@ -185,6 +169,7 @@ public class WUGWRuntime {
                     }
                 }
             }
+
             HashMap<String, File> xmlFileMapPricingPI = UtilFunctions.scanFiles(xmlPIPricing);
             for (String fileName : xmlFileMapPricingPI.keySet()) {
                 String[] keys = fileName.split("-");
@@ -212,10 +197,8 @@ public class WUGWRuntime {
     }
 
     private void initSSLContext() throws Exception {
-        // try {
         KeyStore ksPI = KeyStore.getInstance("JKS");
-        InputStream inPI = new
-                ClassPathResource(getProperty("PI.keyStore")).getInputStream();
+        InputStream inPI = new ClassPathResource(getProperty("PI.keyStore")).getInputStream();
         ksPI.load(inPI, getProperty("PI.keyPassWord").toCharArray());
         X509KeyManager kmPI = UtilFunctions.getKeyManager("SunX509", ksPI,
                 getProperty("PI.keyPassWord").toCharArray());
@@ -226,32 +209,16 @@ public class WUGWRuntime {
         X509KeyManager kmPROD = UtilFunctions.getKeyManager("SunX509", ksPROD,
                 getProperty("PROD.keyPassWord").toCharArray());
 
-        // String env = getProperty("GWRuntime.env");
         KeyManager[] keyManagers = new KeyManager[1];
-        // if(env.equals("PROD")) {
         keyManagers[0] = kmPROD;
-        //keyManagers[0] = kmPI;
-
-        // } else {
-        // keyManagers[0] = kmPI;
-        // }
 
         SSLContext context = SSLContext.getInstance("TLSv1.2");
         context.init(keyManagers, null, null);
         SSLContext.setDefault(context);
 
-        /*
-         * } catch (NoSuchAlgorithmException e) { UtilFunctions.loggingException(e); }
-         * catch (KeyManagementException e) { UtilFunctions.loggingException(e); } catch
-         * (CertificateException e) { UtilFunctions.loggingException(e); } catch
-         * (IOException e) { UtilFunctions.loggingException(e); } catch
-         * (KeyStoreException e) { UtilFunctions.loggingException(e); }
-         */
-
         HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
             public boolean verify(String hostname, SSLSession session) {
                 if (hostname.equals(getProperty("PROD.domain")))
-                    //if (hostname.equals(getProperty("PI.domain")))
                     return true;
                 return false;
             }
@@ -259,44 +226,10 @@ public class WUGWRuntime {
     }
 
     /**
-     * Properties used for Gateway Client Running
+     * Returns a property value from Spring Boot's environment (application.properties).
      */
-    private void initProperties() {
-
-        if (utilProps == null) {
-
-            utilProps = new Properties();
-
-            File file = null;
-            InputStream in = null;
-
-            try {
-
-                file = ResourceUtils.getFile(GW_RUNTIME_PROPS_FILE);
-                in = new FileInputStream(file);
-
-                utilProps.load(in);
-
-                in.close();
-
-            } catch (FileNotFoundException e) {
-                UtilFunctions.loggingException(e);
-            } catch (IOException e) {
-                UtilFunctions.loggingException(e);
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e) {
-                        UtilFunctions.loggingException(UtilFunctions.logger, e);
-                    }
-                }
-            }
-        }
-    }
-
     public String getProperty(String propName) {
-        return utilProps.getProperty(propName);
+        return environment.getProperty(propName);
     }
 
     public HashMap<String, AbstractServiceRequest> getRequestMap() {
@@ -382,5 +315,4 @@ public class WUGWRuntime {
     public Map<String, File> getPricingAISMapPI() {
         return pricingAISMapPI;
     }
-
 }
