@@ -14,170 +14,188 @@ import com.wu.gw.model.ExcelDataEntry;
 import com.wu.gw.util.UtilFunctions;
 import com.wu.xmlhandler.GWMessageAssembleUtils;
 import com.wu.xmlhandler.XMLAssemblerHandler;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 public class PricingTableRequest extends AbstractServiceRequest {
 
-	private Map<String, File> fiBISMapProd;
-	private Map<String, File> fiAISMapProd;
-	
-	private Map<String, File> fiBISMapPI;
-	private Map<String, File> fiAISMapPI;
+        @Value("${PricingTableRequest.serialNum}")
+        private String serialNum;
 
-	private XMLAssemblerHandler xmlHandlerAIS;
-	private XMLAssemblerHandler xmlHandlerBIS;
-	
-	private FeeInquiryExcelDelegator delegator = new FeeInquiryExcelDelegator();
+        @Value("${PricingTableRequest.description}")
+        private String descriptionValue;
 
-	public PricingTableRequest() {
-		super();
-	}
+        @PostConstruct
+        private void init() {
+                setRequestID(serialNum);
+                setDescription(descriptionValue);
+        }
 
-	@Override
-	public boolean doService() {
-		fiBISMapProd = wugwRuntime.getPricingBISMapProd();
-		fiAISMapProd = wugwRuntime.getPricingAISMapProd();
-		
-		fiBISMapPI = wugwRuntime.getPricingBISMapPI();
-		fiAISMapPI = wugwRuntime.getPricingAISMapPI();
-		
-		xmlHandlerAIS = wugwRuntime.getAISAssemblerHandler();
-		xmlHandlerBIS = wugwRuntime.getBISAssemblerHandler();
-		
-		String inputFolderPath = wugwRuntime.getProperty("Pricing.input.folder");
-		String outputFolderPath = wugwRuntime.getProperty("Pricing.output.folder");
+        private Map<String, File> fiBISMapProd;
+        private Map<String, File> fiAISMapProd;
+        
+        private Map<String, File> fiBISMapPI;
+        private Map<String, File> fiAISMapPI;
 
-		HashMap<String, File> dataFileMap = UtilFunctions.scanFiles(new File(inputFolderPath));
+        private XMLAssemblerHandler xmlHandlerAIS;
+        private XMLAssemblerHandler xmlHandlerBIS;
+        
+        private FeeInquiryExcelDelegator delegator = new FeeInquiryExcelDelegator();
 
-		dataFileMap.forEach((fName, dataFile) -> {
-			try {
-				execute(dataFile, fName);
-				String destFilePath = outputFolderPath + "/" + UtilFunctions.getCurrentDate() + " " + dataFile.getName();
-				UtilFunctions.copyFile(dataFile.getPath(), destFilePath);
-			} catch (IOException e) {
-				UtilFunctions.loggingException(e);
-			}
-		});
+        public PricingTableRequest() {
+                super();
+        }
 
-		return true;
-	}
-	
-	public boolean runServiceStandalone(WUGWRuntime wugwRuntime) {
-		
-		this.wugwRuntime = wugwRuntime;
-		
-		fiBISMapProd = wugwRuntime.getPricingBISMapProd();
-		fiAISMapProd = wugwRuntime.getPricingAISMapProd();
-		
-		xmlHandlerAIS = wugwRuntime.getAISAssemblerHandler();
-		xmlHandlerBIS = wugwRuntime.getBISAssemblerHandler();
-		
-		String inputFolderPath = wugwRuntime.getProperty("Pricing.input.folder");
-		String outputFolderPath = "C:/Users/303172/OneDrive - Western Union/[PricingTable]";
+        @Override
+        public boolean doService() {
+                fiBISMapProd = wugwRuntime.getPricingBISMapProd();
+                fiAISMapProd = wugwRuntime.getPricingAISMapProd();
+                
+                fiBISMapPI = wugwRuntime.getPricingBISMapPI();
+                fiAISMapPI = wugwRuntime.getPricingAISMapPI();
+                
+                xmlHandlerAIS = wugwRuntime.getAISAssemblerHandler();
+                xmlHandlerBIS = wugwRuntime.getBISAssemblerHandler();
+                
+                String inputFolderPath = wugwRuntime.getProperty("Pricing.input.folder");
+                String outputFolderPath = wugwRuntime.getProperty("Pricing.output.folder");
 
-		HashMap<String, File> dataFileMap = UtilFunctions.scanFiles(new File(inputFolderPath));
+                HashMap<String, File> dataFileMap = UtilFunctions.scanFiles(new File(inputFolderPath));
 
-		dataFileMap.forEach((fName, dataFile) -> {
-			try {
-				execute(dataFile, fName);
-				String destFilePath = outputFolderPath + "/" + UtilFunctions.getCurrentDate() + " " + dataFile.getName();
-				//String destFilePath = outputFolderPath + "/" + dataFile.getName();
-				UtilFunctions.moveFile(dataFile.getPath(), destFilePath);
-			} catch (IOException e) {
-				UtilFunctions.loggingException(e);
-			}
-		});
+                dataFileMap.forEach((fName, dataFile) -> {
+                        try {
+                                execute(dataFile, fName);
+                                String destFilePath = outputFolderPath + "/" + UtilFunctions.getCurrentDate() + " " + dataFile.getName();
+                                UtilFunctions.copyFile(dataFile.getPath(), destFilePath);
+                        } catch (IOException e) {
+                                UtilFunctions.loggingException(e);
+                        }
+                });
 
-		return true;
-	}
+                return true;
+        }
+        
+        public boolean runServiceStandalone(WUGWRuntime wugwRuntime) {
+                
+                this.wugwRuntime = wugwRuntime;
+                
+                fiBISMapProd = wugwRuntime.getPricingBISMapProd();
+                fiAISMapProd = wugwRuntime.getPricingAISMapProd();
+                
+                xmlHandlerAIS = wugwRuntime.getAISAssemblerHandler();
+                xmlHandlerBIS = wugwRuntime.getBISAssemblerHandler();
+                
+                String inputFolderPath = wugwRuntime.getProperty("Pricing.input.folder");
+                String outputFolderPath = "C:/Users/303172/OneDrive - Western Union/[PricingTable]";
 
-	private void execute(File dataFile, String fileName) {
-		try {
-			String[] keys = fileName.split("-");
-			String env = keys[1].trim();
-			String naid = keys[2].trim();
-			String serviceURL = wugwRuntime.getProperty(env + ".domain");
-			List<Object> dataSet = ExcelFileReader.readFromExcel(dataFile.getPath(), delegator);
-			for (Object sObject : dataSet) {
-				ExcelDataEntry sData = (ExcelDataEntry) sObject;
-				if (sData != null) {
-					if(env.equalsIgnoreCase("PI")) {
-						this.inquireFeeCharge(sData, serviceURL, fiAISMapPI, fiBISMapPI, naid);
-					} else if (env.equalsIgnoreCase("PROD")) {
-						this.inquireFeeCharge(sData, serviceURL, fiAISMapProd, fiBISMapProd, naid);
-					}
-				}
-			}
-			
-			ExcelFileUpdator.updateToExcel(dataFile.getPath(), delegator, dataSet);
+                HashMap<String, File> dataFileMap = UtilFunctions.scanFiles(new File(inputFolderPath));
 
-		} catch (Exception e) {
+                dataFileMap.forEach((fName, dataFile) -> {
+                        try {
+                                execute(dataFile, fName);
+                                String destFilePath = outputFolderPath + "/" + UtilFunctions.getCurrentDate() + " " + dataFile.getName();
+                                //String destFilePath = outputFolderPath + "/" + dataFile.getName();
+                                UtilFunctions.moveFile(dataFile.getPath(), destFilePath);
+                        } catch (IOException e) {
+                                UtilFunctions.loggingException(e);
+                        }
+                });
 
-			UtilFunctions.loggingException(e);
-		}
-	}
+                return true;
+        }
 
-	private void inquireFeeCharge(ExcelDataEntry sData, String serviceURL, Map<String, File> fiAISMap,
-			Map<String, File> fiBISMap, String naid) throws IOException {
-		
-		String sCountryCode = sData.getSendCountryCurrency().getIsoCode().getCountryCode();
-		String sCurrencyCode = sData.getSendCountryCurrency().getIsoCode().getCurrencyCode();
-		//String naid = sData.getNaid();
-		String key = sCountryCode + "-" + naid;
-		// 000 or 500 or 800
-		String service = sData.getServiceType();
+        private void execute(File dataFile, String fileName) {
+                try {
+                        String[] keys = fileName.split("-");
+                        String env = keys[1].trim();
+                        String naid = keys[2].trim();
+                        String serviceURL = wugwRuntime.getProperty(env + ".domain");
+                        List<Object> dataSet = ExcelFileReader.readFromExcel(dataFile.getPath(), delegator);
+                        for (Object sObject : dataSet) {
+                                ExcelDataEntry sData = (ExcelDataEntry) sObject;
+                                if (sData != null) {
+                                        if(env.equalsIgnoreCase("PI")) {
+                                                this.inquireFeeCharge(sData, serviceURL, fiAISMapPI, fiBISMapPI, naid);
+                                        } else if (env.equalsIgnoreCase("PROD")) {
+                                                this.inquireFeeCharge(sData, serviceURL, fiAISMapProd, fiBISMapProd, naid);
+                                        }
+                                }
+                        }
+                        
+                        ExcelFileUpdator.updateToExcel(dataFile.getPath(), delegator, dataSet);
 
-		if (sData.getApiType().equalsIgnoreCase("AIS") && fiAISMap.containsKey(key)) {
-			File fiFile = fiAISMap.get(key);
-			String fiXMLStr = UtilFunctions.readFileToString(fiFile);
+                } catch (Exception e) {
 
-			fiXMLStr = GWMessageAssembleUtils.assembleAISFIRequestMsgForPricing(xmlHandlerAIS, fiXMLStr, sData);
-			String fiReplyStr = UtilFunctions.requestGatewayService(serviceURL, fiXMLStr);
+                        UtilFunctions.loggingException(e);
+                }
+        }
 
-			if (!fiReplyStr.startsWith("error - ")) {
-				String fee = UtilFunctions.retrieveXMLValue(fiReplyStr, "charges");
-				sData.setFee(UtilFunctions.convertToNatureAmount(fee) + " " + sCurrencyCode);
+        private void inquireFeeCharge(ExcelDataEntry sData, String serviceURL, Map<String, File> fiAISMap,
+                        Map<String, File> fiBISMap, String naid) throws IOException {
+                
+                String sCountryCode = sData.getSendCountryCurrency().getIsoCode().getCountryCode();
+                String sCurrencyCode = sData.getSendCountryCurrency().getIsoCode().getCurrencyCode();
+                //String naid = sData.getNaid();
+                String key = sCountryCode + "-" + naid;
+                // 000 or 500 or 800
+                String service = sData.getServiceType();
 
-				String fxRate = UtilFunctions.retrieveXMLValue(fiReplyStr, "exchange_rate");
-				sData.setFxRate(fxRate);
+                if (sData.getApiType().equalsIgnoreCase("AIS") && fiAISMap.containsKey(key)) {
+                        File fiFile = fiAISMap.get(key);
+                        String fiXMLStr = UtilFunctions.readFileToString(fiFile);
 
-			} else {
-				UtilFunctions.logger.info("AIS FI - " + fiReplyStr);
-				sData.setFee("AIS FI " + fiReplyStr);
-			}
-		} else if (sData.getApiType().equalsIgnoreCase("BIS") && fiBISMap.containsKey(key)) {
-			File fiFile = fiBISMap.get(key);
-			String fiXMLStr = UtilFunctions.readFileToString(fiFile);
+                        fiXMLStr = GWMessageAssembleUtils.assembleAISFIRequestMsgForPricing(xmlHandlerAIS, fiXMLStr, sData);
+                        String fiReplyStr = UtilFunctions.requestGatewayService(serviceURL, fiXMLStr);
 
-			fiXMLStr = GWMessageAssembleUtils.assembleBISFIRequestMsgForPricing(xmlHandlerBIS, fiXMLStr, sData);
-			String fiReplyStr = UtilFunctions.requestGatewayService(serviceURL, fiXMLStr);
+                        if (!fiReplyStr.startsWith("error - ")) {
+                                String fee = UtilFunctions.retrieveXMLValue(fiReplyStr, "charges");
+                                sData.setFee(UtilFunctions.convertToNatureAmount(fee) + " " + sCurrencyCode);
 
-			if (!fiReplyStr.startsWith("error - ")) {
-				/*String fee = UtilFunctions.retrieveXMLValue(fiReplyStr, "charges");
-				sData.setFee(UtilFunctions.convertToNatureAmount(fee) + " " + sCurrencyCode);
+                                String fxRate = UtilFunctions.retrieveXMLValue(fiReplyStr, "exchange_rate");
+                                sData.setFxRate(fxRate);
 
-				String fxRate = UtilFunctions.retrieveXMLValue(fiReplyStr, "exchange_rate");
-				sData.setFxRate(fxRate);*/
-				
-				List<String> serviceOptionList = UtilFunctions.retrieveAllSubElements(fiReplyStr, "service_option");
-				
-				serviceOptionList.forEach((String serviceOption) -> {
-					if(serviceOption != null && !serviceOption.equals("")) {
-						String serviceType = UtilFunctions.retrieveXMLValue(serviceOption, "code");
-						if(serviceType.equals(service)) {
-							String fee = UtilFunctions.retrieveXMLValue(serviceOption, "charges");
-							sData.setFee(UtilFunctions.convertToNatureAmount(fee) + " " + sCurrencyCode);
+                        } else {
+                                UtilFunctions.logger.info("AIS FI - " + fiReplyStr);
+                                sData.setFee("AIS FI " + fiReplyStr);
+                        }
+                } else if (sData.getApiType().equalsIgnoreCase("BIS") && fiBISMap.containsKey(key)) {
+                        File fiFile = fiBISMap.get(key);
+                        String fiXMLStr = UtilFunctions.readFileToString(fiFile);
 
-							String fxRate = UtilFunctions.retrieveXMLValue(serviceOption, "exchange_rate");
-							sData.setFxRate(fxRate);
-						}
-					}
-				});
-			} else {
-				UtilFunctions.logger.info("BIS FI - " + fiReplyStr);
-				sData.setFee("BIS FI " + fiReplyStr);
-			}
-		} else {
-			sData.setFee("The sending country/currency is not available : " + key);
-		}
-	}
+                        fiXMLStr = GWMessageAssembleUtils.assembleBISFIRequestMsgForPricing(xmlHandlerBIS, fiXMLStr, sData);
+                        String fiReplyStr = UtilFunctions.requestGatewayService(serviceURL, fiXMLStr);
+
+                        if (!fiReplyStr.startsWith("error - ")) {
+                                /*String fee = UtilFunctions.retrieveXMLValue(fiReplyStr, "charges");
+                                sData.setFee(UtilFunctions.convertToNatureAmount(fee) + " " + sCurrencyCode);
+
+                                String fxRate = UtilFunctions.retrieveXMLValue(fiReplyStr, "exchange_rate");
+                                sData.setFxRate(fxRate);*/
+                                
+                                List<String> serviceOptionList = UtilFunctions.retrieveAllSubElements(fiReplyStr, "service_option");
+                                
+                                serviceOptionList.forEach((String serviceOption) -> {
+                                        if(serviceOption != null && !serviceOption.equals("")) {
+                                                String serviceType = UtilFunctions.retrieveXMLValue(serviceOption, "code");
+                                                if(serviceType.equals(service)) {
+                                                        String fee = UtilFunctions.retrieveXMLValue(serviceOption, "charges");
+                                                        sData.setFee(UtilFunctions.convertToNatureAmount(fee) + " " + sCurrencyCode);
+
+                                                        String fxRate = UtilFunctions.retrieveXMLValue(serviceOption, "exchange_rate");
+                                                        sData.setFxRate(fxRate);
+                                                }
+                                        }
+                                });
+                        } else {
+                                UtilFunctions.logger.info("BIS FI - " + fiReplyStr);
+                                sData.setFee("BIS FI " + fiReplyStr);
+                        }
+                } else {
+                        sData.setFee("The sending country/currency is not available : " + key);
+                }
+        }
 }

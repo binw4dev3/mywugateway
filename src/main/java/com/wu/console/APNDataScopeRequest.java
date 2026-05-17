@@ -3,6 +3,10 @@ package com.wu.console;
 import com.wu.WUGWRuntime;
 import com.wu.config.ApplicationContextProvider;
 import com.wu.excel.ExcelException;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import com.wu.excel.impl.APNTemplateExcelDelegator;
 import com.wu.excel.impl.D2BDataScopeExcelDelegator;
 import com.wu.excel.impl.ExcelFileWriter;
@@ -26,7 +30,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
+@Scope("prototype")
 public class APNDataScopeRequest extends AbstractServiceRequest {
+
+    @Value("${APNDataScopeRequest.serialNum}")
+    private String serialNum;
+
+    @Value("${APNDataScopeRequest.description}")
+    private String descriptionValue;
+
+    @PostConstruct
+    private void init() {
+        setRequestID(serialNum);
+        setDescription(descriptionValue);
+    }
 
     private Map<String, File> dasAISMap;
     private Map<String, File> dasBISMap;
