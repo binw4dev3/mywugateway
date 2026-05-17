@@ -8,6 +8,7 @@ import com.wu.gw.model.PKJsonTxnObject;
 import com.wu.gw.model.ais.CountryCurrencyInfo;
 import com.wu.gw.model.ais.GeneralName;
 import com.wu.gw.model.ais.IsoCode;
+import com.wu.gw.model.ais.NameType;
 import com.wu.gw.service.PKMTCNPushService;
 import com.wu.gw.util.UtilFunctions;
 import com.wu.web.model.RespBean;
@@ -476,6 +477,7 @@ public class MtcnService {
 
     private GeneralName generateRandomName() {
         GeneralName name = new GeneralName();
+        name.setNameType(NameType.D);
         name.setFirstName(TEST_FIRST_NAMES[random.nextInt(TEST_FIRST_NAMES.length)]);
         name.setLastName(TEST_LAST_NAMES[random.nextInt(TEST_LAST_NAMES.length)]);
         return name;
@@ -483,9 +485,21 @@ public class MtcnService {
 
     private GeneralName toGeneralName(MtcnRequest.NameRequest nameRequest) {
         GeneralName name = new GeneralName();
-        name.setFirstName(nameRequest.getFirstName());
-        name.setMiddleName(nameRequest.getMiddleName());
-        name.setLastName(nameRequest.getLastName());
+        String nameType = nameRequest.getNameType();
+        if ("M".equalsIgnoreCase(nameType)) {
+            name.setNameType(NameType.M);
+            name.setGivenName(nameRequest.getGivenName());
+            name.setPaternalName(nameRequest.getPaternalName());
+            name.setMaternalName(nameRequest.getMaternalName());
+        } else if ("C".equalsIgnoreCase(nameType)) {
+            name.setNameType(NameType.C);
+            name.setBusinessName(nameRequest.getBusinessName());
+        } else {
+            name.setNameType(NameType.D);
+            name.setFirstName(nameRequest.getFirstName());
+            name.setMiddleName(nameRequest.getMiddleName());
+            name.setLastName(nameRequest.getLastName());
+        }
         return name;
     }
 }

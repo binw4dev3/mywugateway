@@ -63,17 +63,52 @@ public class MtcnRequest {
 
     // ── Nested types ──────────────────────────────────────────────────────────
 
+    /**
+     * Name container whose fields depend on nameType:
+     *
+     *   "D" (Domestic)  — firstName, middleName, lastName
+     *   "M" (Mexican)   — givenName, paternalName, maternalName
+     *   "C" (Company)   — businessName
+     *
+     * nameType defaults to "D" when absent.
+     */
     public static class NameRequest {
+
+        /** "D" | "M" | "C" — determines which name fields apply. Defaults to "D". */
+        private String nameType;
+
+        // Type D
         private String firstName;
         private String middleName;
         private String lastName;
 
+        // Type M
+        private String givenName;
+        private String paternalName;
+        private String maternalName;
+
+        // Type C
+        private String businessName;
+
+        public String getNameType()   { return nameType; }
+        public void setNameType(String nameType) { this.nameType = nameType; }
+
         public String getFirstName()  { return firstName; }
-        public void setFirstName(String firstName)   { this.firstName = firstName; }
+        public void setFirstName(String firstName)       { this.firstName = firstName; }
         public String getMiddleName() { return middleName; }
-        public void setMiddleName(String middleName) { this.middleName = middleName; }
+        public void setMiddleName(String middleName)     { this.middleName = middleName; }
         public String getLastName()   { return lastName; }
-        public void setLastName(String lastName)     { this.lastName = lastName; }
+        public void setLastName(String lastName)         { this.lastName = lastName; }
+
+        public String getGivenName()    { return givenName; }
+        public void setGivenName(String givenName)       { this.givenName = givenName; }
+        public String getPaternalName() { return paternalName; }
+        public void setPaternalName(String paternalName) { this.paternalName = paternalName; }
+        public String getMaternalName() { return maternalName; }
+        public void setMaternalName(String maternalName) { this.maternalName = maternalName; }
+
+        public String getBusinessName() { return businessName; }
+        public void setBusinessName(String businessName) { this.businessName = businessName; }
     }
 
     public static class CountryRequest {
