@@ -71,19 +71,10 @@ public class MtcnController {
             Each entry in the list follows the same field rules as the single-request endpoint.
             The response list preserves the same order as the input list.
             Check the 'success' flag on each result to identify any that failed.""")
-    public ApiResponse<List<MtcnResult>> generateBatch(@RequestBody List<MtcnRequest> requests) {
-        try {
-            if (requests == null || requests.isEmpty()) {
-                return ApiResponse.error("Request list must not be empty.");
-            }
-            List<MtcnResult> results = mtcnService.processBatch(requests);
-            long failCount = results.stream().filter(r -> !r.isSuccess()).count();
-            String message = failCount == 0
-                    ? "All " + results.size() + " MTCN(s) generated successfully."
-                    : results.size() + " request(s) processed; " + failCount + " failed.";
-            return ApiResponse.ok(message, results);
-        } catch (Exception e) {
-            return ApiResponse.error("Failed to process batch: " + e.getMessage());
+    public List<MtcnResult> generateBatch(@RequestBody List<MtcnRequest> requests) {
+        if (requests == null || requests.isEmpty()) {
+            return List.of();
         }
+        return mtcnService.processBatch(requests);
     }
 }
