@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.wu.api.service.MtcnService;
 import com.wu.console.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -141,19 +140,6 @@ public class WUGWConfig implements EnvironmentAware {
                 return cc;
         }
 
-        @Bean
-        @Scope("prototype")
-        public GenerateMTCNRequest genMTCNRequest(MtcnService mtcnService) {
-                GenerateMTCNRequest genMTCNRequest = new GenerateMTCNRequest();
-                genMTCNRequest.setRequestID(environment.getProperty("GenMTCNRequest.serialNum"));
-                genMTCNRequest.setDescription(environment.getProperty("GenMTCNRequest.description"));
-                genMTCNRequest.setInputFolderPath(environment.getProperty("MTCN.input.folder"));
-                genMTCNRequest.setOutputFolderPath(environment.getProperty("MTCN.output.folder"));
-                genMTCNRequest.setStandaloneInputFolderPath(environment.getProperty("MTCN.standalone.input.folder"));
-                genMTCNRequest.setStandaloneOutputFolderPath(environment.getProperty("MTCN.standalone.output.folder"));
-                genMTCNRequest.setMtcnService(mtcnService);
-                return genMTCNRequest;
-        }
 
         @Bean
         @Scope("prototype")
@@ -238,9 +224,9 @@ public class WUGWConfig implements EnvironmentAware {
 
         @Bean
         @Scope("prototype")
-        public HashMap<String, AbstractServiceRequest> requestMap(APNDynamicRequest apnDynamicRequest, MtcnService mtcnService) {
+        public HashMap<String, AbstractServiceRequest> requestMap(APNDynamicRequest apnDynamicRequest, GenerateMTCNRequest genMTCNRequest) {
                 HashMap<String, AbstractServiceRequest> requestMap = new HashMap<String, AbstractServiceRequest>();
-                requestMap.put(environment.getProperty("GenMTCNRequest.serialNum"), genMTCNRequest(mtcnService));
+                requestMap.put(environment.getProperty("GenMTCNRequest.serialNum"), genMTCNRequest);
                 requestMap.put(environment.getProperty("CountryCurrencyListRequest.serialNum"), countryCurrencyListRequest());
                 requestMap.put(environment.getProperty("USStateListRequest.serialNum"), usStateListRequest());
                 requestMap.put(environment.getProperty("MexicoCityStateRequest.serialNum"), mexicoCityStateRequest());

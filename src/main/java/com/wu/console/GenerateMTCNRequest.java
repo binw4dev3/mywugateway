@@ -7,6 +7,11 @@ import java.util.List;
 
 import com.wu.api.service.MtcnService;
 import com.wu.excel.impl.ExcelFileUpdator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.context.annotation.Scope;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import com.wu.WUGWRuntime;
@@ -18,31 +23,45 @@ import com.wu.gw.util.UtilFunctions;
 /**
  * Console request handler for file-based MTCN batch generation.
  *
- * Reads ExcelDataEntry rows from Excel files in the configured input folder,
- * delegates each row to MtcnService for gateway processing, then writes the
- * results (MTCN, fee, refundMTCN) back to the same file and moves it to the
- * output folder.
+ * A @Component with prototype scope — Spring manages the full lifecycle,
+ * including @Autowired injection and EnvironmentAware callback.
+ * EnvironmentAware is used (instead of @Value) because a custom
+ * PropertyPlaceholderConfigurer (XMLAssemblerHandler) is registered in the
+ * context and does not load application.properties, making @Value unable to
+ * resolve those property keys.
  *
  * For the REST API path, use MtcnController / MtcnService directly.
  */
-public class GenerateMTCNRequest extends AbstractServiceRequest {
+@Component
+@Scope("prototype")
+public class GenerateMTCNRequest extends AbstractServiceRequest implements EnvironmentAware {
 
     private String inputFolderPath;
     private String outputFolderPath;
     private String standaloneInputFolderPath;
     private String standaloneOutputFolderPath;
 
+    @Autowired
     private MtcnService mtcnService;
 
     public GenerateMTCNRequest() {
         super();
     }
 
-    public void setInputFolderPath(String inputFolderPath)                   { this.inputFolderPath = inputFolderPath; }
-    public void setOutputFolderPath(String outputFolderPath)                  { this.outputFolderPath = outputFolderPath; }
-    public void setStandaloneInputFolderPath(String standaloneInputFolderPath) { this.standaloneInputFolderPath = standaloneInputFolderPath; }
-    public void setStandaloneOutputFolderPath(String standaloneOutputFolderPath) { this.standaloneOutputFolderPath = standaloneOutputFolderPath; }
-    public void setMtcnService(MtcnService mtcnService)                       { this.mtcnService = mtcnService; }
+    /**
+     * Called by Spring after the bean is created and all dependencies are wired.
+     * Reads path properties from the Environment, bypassing the
+     * PropertyPlaceholderConfigurer which does not load application.properties.
+     */
+    @Override
+    public void setEnvironment(Environment env) {
+        setRequestID(env.getProperty("GenMTCNRequest.serialNum"));
+        setDescription(env.getProperty("GenMTCNRequest.description"));
+        inputFolderPath           = env.getProperty("MTCN.input.folder", "");
+        outputFolderPath          = env.getProperty("MTCN.output.folder", "");
+        standaloneInputFolderPath  = env.getProperty("MTCN.standalone.input.folder", "");
+        standaloneOutputFolderPath = env.getProperty("MTCN.standalone.output.folder", "");
+    }
 
     /**
      * Standalone loop: continuously scans the OneDrive/standalone input folder,
