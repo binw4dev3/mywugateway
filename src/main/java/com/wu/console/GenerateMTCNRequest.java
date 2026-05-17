@@ -32,6 +32,12 @@ public class GenerateMTCNRequest extends AbstractServiceRequest {
         @Value("${MTCN.output.folder}")
         private String outputFolderPath;
 
+        @Value("${MTCN.standalone.input.folder}")
+        private String standaloneInputFolderPath;
+
+        @Value("${MTCN.standalone.output.folder}")
+        private String standaloneOutputFolderPath;
+
         private Map<String, File> smvAISMap;
         private Map<String, File> smsAISMap;
         private Map<String, File> smvBISMap;
@@ -65,7 +71,7 @@ public class GenerateMTCNRequest extends AbstractServiceRequest {
 
                 File inputFolder = null;
                 try {
-                        inputFolder = ResourceUtils.getFile(inputFolderPath);
+                        inputFolder = ResourceUtils.getFile(standaloneInputFolderPath);
                 } catch (FileNotFoundException e1) {
                         UtilFunctions.loggingException(e1);
                         return;
@@ -78,7 +84,7 @@ public class GenerateMTCNRequest extends AbstractServiceRequest {
                         dataFileMap.forEach((fName, dataFile) -> {
                                 try {
                                         execute(dataFile);
-                                        String destFilePath = outputFolderPath + "/" + UtilFunctions.getCurrentDate() + "-"
+                                        String destFilePath = standaloneOutputFolderPath + "/" + UtilFunctions.getCurrentDate() + "-"
                                                         + dataFile.getName();
                                         UtilFunctions.moveFile(dataFile.getPath(), destFilePath);
                                 } catch (Exception e) {
