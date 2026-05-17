@@ -108,11 +108,14 @@ public class GenerateMTCNRequest extends AbstractServiceRequest {
      */
     @Override
     public boolean doService() {
-        File inputFolder;
-        try {
-            inputFolder = ResourceUtils.getFile(inputFolderPath);
-        } catch (FileNotFoundException e) {
-            UtilFunctions.loggingException(e);
+        if (inputFolderPath == null || inputFolderPath.isBlank()) {
+            UtilFunctions.mtcnLogger.info("MTCN.input.folder is not configured; skipping batch file processing.");
+            return true;
+        }
+
+        File inputFolder = new File(inputFolderPath);
+        if (!inputFolder.exists() || !inputFolder.isDirectory()) {
+            UtilFunctions.mtcnLogger.info("MTCN input folder does not exist: " + inputFolderPath + "; skipping batch file processing.");
             return true;
         }
 
