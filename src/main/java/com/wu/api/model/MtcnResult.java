@@ -15,6 +15,7 @@ public class MtcnResult {
     private String senderAddress;
     private String amount;
     private String mtcn;
+    private String refundMtcn;
     private String fee;
     private String fxRate;
     private boolean success;
@@ -81,10 +82,13 @@ public class MtcnResult {
     public String getAmount()  { return amount; }
     public void setAmount(String amount) { this.amount = amount; }
 
-    public String getMtcn()    { return mtcn; }
-    public void setMtcn(String mtcn)     { this.mtcn = mtcn; }
+    public String getMtcn()       { return mtcn; }
+    public void setMtcn(String mtcn)        { this.mtcn = mtcn; }
 
-    public String getFee()     { return fee; }
+    public String getRefundMtcn() { return refundMtcn; }
+    public void setRefundMtcn(String refundMtcn) { this.refundMtcn = refundMtcn; }
+
+    public String getFee()        { return fee; }
     public void setFee(String fee)       { this.fee = fee; }
 
     public String getFxRate()  { return fxRate; }

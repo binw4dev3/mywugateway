@@ -396,6 +396,7 @@ public class MtcnService {
         result.setAmount(data.getAmount());
         result.setFee(data.getFee());
         result.setFxRate(data.getFxRate());
+        result.setRefundMtcn(data.getRefundMTCN());
 
         // Determine success: a real MTCN is a numeric/alphanumeric code,
         // not one of the error strings the gateway methods write on failure.
