@@ -1,16 +1,12 @@
 package com.wu.config;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import com.wu.console.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 import com.wu.WUGWRuntime;
 import com.wu.gw.model.WUTransaction;
@@ -21,6 +17,7 @@ import com.wu.gw.service.GetDeliveryServices;
 import com.wu.gw.service.GetMexicoCityState;
 import com.wu.gw.service.GetUSStateList;
 import com.wu.xmlhandler.XMLAssemblerHandler;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @Configuration
 public class WUGWConfig {
@@ -274,31 +271,10 @@ public class WUGWConfig {
 
     @Bean
     @Scope("singleton")
-    public XMLAssemblerHandler AISAssemblerHandler() {
-        XMLAssemblerHandler handler = new XMLAssemblerHandler();
-        List<Resource> assemblers = new ArrayList<>();
-        assemblers.add(new ClassPathResource("/properties/XMLAssembler-Send-AIS.properties"));
-        assemblers.add(new ClassPathResource("/properties/XMLAssembler-CSCFunc-AIS.properties"));
-        assemblers.add(new ClassPathResource("/properties/XMLAssembler-DAS.properties"));
-        handler.setAssemberResources(assemblers);
-        return handler;
-    }
-
-    @Bean
-    @Scope("singleton")
-    public XMLAssemblerHandler BISAssemblerHandler() {
-        XMLAssemblerHandler handler = new XMLAssemblerHandler();
-        List<Resource> assemblers = new ArrayList<>();
-        assemblers.add(new ClassPathResource("/properties/XMLAssembler-Send-BIS.properties"));
-        assemblers.add(new ClassPathResource("/properties/XMLAssembler-DAS.properties"));
-        handler.setAssemberResources(assemblers);
-        return handler;
-    }
-
-    @Bean
-    @Scope("singleton")
-    public WUGWRuntime WUGWRuntime(XMLAssemblerHandler AISAssemblerHandler,
-            XMLAssemblerHandler BISAssemblerHandler, HashMap<String, AbstractServiceRequest> requestMap) {
+    public WUGWRuntime WUGWRuntime(
+            @Qualifier("AISAssemblerHandler") XMLAssemblerHandler AISAssemblerHandler,
+            @Qualifier("BISAssemblerHandler") XMLAssemblerHandler BISAssemblerHandler,
+            HashMap<String, AbstractServiceRequest> requestMap) {
         WUGWRuntime runtime = new WUGWRuntime();
         runtime.setRequestMap(requestMap);
         runtime.setAISAssemblerHandler(AISAssemblerHandler);

@@ -5,23 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.core.io.Resource;
 import org.springframework.util.DefaultPropertiesPersister;
 import org.springframework.util.PropertiesPersister;
 
 /**
- * Loads XML assembler property files and builds the element/assembler maps
- * used at runtime by WUGWRuntime.
+ * Base class that loads XML assembler property files and builds the
+ * element/assembler maps consumed at runtime by WUGWRuntime.
  *
- * Previously extended PropertyPlaceholderConfigurer, which had the side effect
- * of taking over @Value placeholder resolution for the entire Spring context
- * (using only the assembler files as sources, not application.properties).
- *
- * Now a plain Spring-managed bean: resources are set by the @Bean factory
- * method in WUGWConfig, and @PostConstruct triggers the load once the bean
- * is fully initialized. Spring Boot's default PropertySourcesPlaceholderConfigurer
- * handles all @Value resolution from application.properties as normal.
+ * This class contains all loading and map-building logic.
+ * Concrete subclasses (AISAssemblerHandler, BISAssemblerHandler) are the
+ * Spring-managed @Component beans; they supply their own resource lists from
+ * application.properties and call load() from @PostConstruct.
  */
 public class XMLAssemblerHandler {
 
@@ -35,18 +30,17 @@ public class XMLAssemblerHandler {
 
     /**
      * Loads all configured assembler property files and populates the
-     * elements and assemblers maps. Called automatically by Spring after
-     * the bean is fully constructed and its resources have been set.
+     * elements and assemblers maps. Called by each concrete subclass from
+     * its own @PostConstruct method, after assemberResources has been set.
      */
-    @PostConstruct
-    public void init() {
+    protected void load() {
         if (assemberResources == null) {
             return;
         }
         try {
             Properties props = new Properties();
-            for (Resource assemberResource : assemberResources) {
-                persister.load(props, assemberResource.getInputStream());
+            for (Resource resource : assemberResources) {
+                persister.load(props, resource.getInputStream());
                 buildAssembler(props);
             }
         } catch (IOException ioe) {
