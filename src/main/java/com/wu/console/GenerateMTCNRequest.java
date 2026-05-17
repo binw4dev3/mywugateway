@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.wu.api.service.MtcnService;
 import com.wu.excel.impl.ExcelFileUpdator;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ResourceUtils;
 
 import com.wu.WUGWRuntime;
@@ -28,16 +27,9 @@ import com.wu.gw.util.UtilFunctions;
  */
 public class GenerateMTCNRequest extends AbstractServiceRequest {
 
-    @Value("${MTCN.input.folder}")
     private String inputFolderPath;
-
-    @Value("${MTCN.output.folder}")
     private String outputFolderPath;
-
-    @Value("${MTCN.standalone.input.folder}")
     private String standaloneInputFolderPath;
-
-    @Value("${MTCN.standalone.output.folder}")
     private String standaloneOutputFolderPath;
 
     private MtcnService mtcnService;
@@ -46,9 +38,11 @@ public class GenerateMTCNRequest extends AbstractServiceRequest {
         super();
     }
 
-    public void setMtcnService(MtcnService mtcnService) {
-        this.mtcnService = mtcnService;
-    }
+    public void setInputFolderPath(String inputFolderPath)                   { this.inputFolderPath = inputFolderPath; }
+    public void setOutputFolderPath(String outputFolderPath)                  { this.outputFolderPath = outputFolderPath; }
+    public void setStandaloneInputFolderPath(String standaloneInputFolderPath) { this.standaloneInputFolderPath = standaloneInputFolderPath; }
+    public void setStandaloneOutputFolderPath(String standaloneOutputFolderPath) { this.standaloneOutputFolderPath = standaloneOutputFolderPath; }
+    public void setMtcnService(MtcnService mtcnService)                       { this.mtcnService = mtcnService; }
 
     /**
      * Standalone loop: continuously scans the OneDrive/standalone input folder,

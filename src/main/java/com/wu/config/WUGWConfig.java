@@ -147,6 +147,10 @@ public class WUGWConfig implements EnvironmentAware {
                 GenerateMTCNRequest genMTCNRequest = new GenerateMTCNRequest();
                 genMTCNRequest.setRequestID(environment.getProperty("GenMTCNRequest.serialNum"));
                 genMTCNRequest.setDescription(environment.getProperty("GenMTCNRequest.description"));
+                genMTCNRequest.setInputFolderPath(environment.getProperty("MTCN.input.folder"));
+                genMTCNRequest.setOutputFolderPath(environment.getProperty("MTCN.output.folder"));
+                genMTCNRequest.setStandaloneInputFolderPath(environment.getProperty("MTCN.standalone.input.folder"));
+                genMTCNRequest.setStandaloneOutputFolderPath(environment.getProperty("MTCN.standalone.output.folder"));
                 genMTCNRequest.setMtcnService(mtcnService);
                 return genMTCNRequest;
         }
