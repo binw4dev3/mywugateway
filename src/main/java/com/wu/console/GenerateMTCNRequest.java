@@ -11,6 +11,7 @@ import com.wu.excel.impl.ExcelFileUpdator;
 import com.wu.gw.model.PKJsonTxnObject;
 import com.wu.gw.service.PKMTCNPushService;
 import com.wu.web.model.RespBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ResourceUtils;
 
 import com.wu.WUGWRuntime;
@@ -25,364 +26,364 @@ import com.wu.xmlhandler.XMLAssemblerHandler;
 
 public class GenerateMTCNRequest extends AbstractServiceRequest {
 
-	private Map<String, File> smvAISMap;
-	private Map<String, File> smsAISMap;
-	private Map<String, File> smvBISMap;
-	private Map<String, File> smsBISMap;
-	private Map<String, File> fiBISMap;
-
-	private Map<String, File> searchAISMap;
-	private Map<String, File> refundAISMap;
-
-	private XMLAssemblerHandler xmlHandlerAIS;
-	private XMLAssemblerHandler xmlHandlerBIS;
-
-	public GenerateMTCNRequest() {
-		super();
-	}
-
-	public void runServiceStandalone(WUGWRuntime wugwRuntime) {
-
-		this.wugwRuntime = wugwRuntime;
-		
-		smvAISMap = wugwRuntime.getSmvAISMap();
-		smsAISMap = wugwRuntime.getSmsAISMap();
-		smvBISMap = wugwRuntime.getSmvBISMap();
-		smsBISMap = wugwRuntime.getSmsBISMap();
-		fiBISMap = wugwRuntime.getFiBISMap();
-		searchAISMap = wugwRuntime.getSearchAISMap();
-		refundAISMap = wugwRuntime.getRefundAISMap();
-
-		xmlHandlerAIS = wugwRuntime.getAISAssemblerHandler();
-		xmlHandlerBIS = wugwRuntime.getBISAssemblerHandler();
-
-		String inputFolderPath = "C:/Users/303172/OneDrive - Western Union/[TestingMTCN]/input";
-		String outputFolderPath = "C:/Users/303172/OneDrive - Western Union/[TestingMTCN]/output";
-
-		File inputFolder = null;
-		try {
-			inputFolder = ResourceUtils.getFile(inputFolderPath);
-		} catch (FileNotFoundException e1) {
-			UtilFunctions.loggingException(e1);
-			return;
-		}
-
-		while (true) {
-			UtilFunctions.mtcnLogger.info("Scan MTCN request files in One-Drive input folder...");
-
-			HashMap<String, File> dataFileMap = UtilFunctions.scanFiles(inputFolder);
-			dataFileMap.forEach((fName, dataFile) -> {
-				try {
-					execute(dataFile);
-					String destFilePath = outputFolderPath + "/" + UtilFunctions.getCurrentDate() + "-"
-							+ dataFile.getName();
-					UtilFunctions.moveFile(dataFile.getPath(), destFilePath);
-				} catch (Exception e) {
-					UtilFunctions.mtcnLogger.info(e.getMessage());
-				}
-			});
-
-			UtilFunctions.mtcnLogger.info("Done all the MTCN request files. Rescan later soon.");
-
-			try {
-				Thread.sleep(180000);
-			} catch (InterruptedException e) {
-				UtilFunctions.mtcnLogger.info(e.getMessage());
-				return;
-			}
-		}
-	}
-
-	@Override
-	public boolean doService() {
+        @Value("${MTCN.input.folder}")
+        private String inputFolderPath;
+
+        @Value("${MTCN.output.folder}")
+        private String outputFolderPath;
+
+        private Map<String, File> smvAISMap;
+        private Map<String, File> smsAISMap;
+        private Map<String, File> smvBISMap;
+        private Map<String, File> smsBISMap;
+        private Map<String, File> fiBISMap;
+
+        private Map<String, File> searchAISMap;
+        private Map<String, File> refundAISMap;
+
+        private XMLAssemblerHandler xmlHandlerAIS;
+        private XMLAssemblerHandler xmlHandlerBIS;
+
+        public GenerateMTCNRequest() {
+                super();
+        }
+
+        public void runServiceStandalone(WUGWRuntime wugwRuntime) {
+
+                this.wugwRuntime = wugwRuntime;
+                
+                smvAISMap = wugwRuntime.getSmvAISMap();
+                smsAISMap = wugwRuntime.getSmsAISMap();
+                smvBISMap = wugwRuntime.getSmvBISMap();
+                smsBISMap = wugwRuntime.getSmsBISMap();
+                fiBISMap = wugwRuntime.getFiBISMap();
+                searchAISMap = wugwRuntime.getSearchAISMap();
+                refundAISMap = wugwRuntime.getRefundAISMap();
+
+                xmlHandlerAIS = wugwRuntime.getAISAssemblerHandler();
+                xmlHandlerBIS = wugwRuntime.getBISAssemblerHandler();
 
-		smvAISMap = wugwRuntime.getSmvAISMap();
-		smsAISMap = wugwRuntime.getSmsAISMap();
-		smvBISMap = wugwRuntime.getSmvBISMap();
-		smsBISMap = wugwRuntime.getSmsBISMap();
-		fiBISMap = wugwRuntime.getFiBISMap();
-		searchAISMap = wugwRuntime.getSearchAISMap();
-		refundAISMap = wugwRuntime.getRefundAISMap();
+                File inputFolder = null;
+                try {
+                        inputFolder = ResourceUtils.getFile(inputFolderPath);
+                } catch (FileNotFoundException e1) {
+                        UtilFunctions.loggingException(e1);
+                        return;
+                }
+
+                while (true) {
+                        UtilFunctions.mtcnLogger.info("Scan MTCN request files in One-Drive input folder...");
+
+                        HashMap<String, File> dataFileMap = UtilFunctions.scanFiles(inputFolder);
+                        dataFileMap.forEach((fName, dataFile) -> {
+                                try {
+                                        execute(dataFile);
+                                        String destFilePath = outputFolderPath + "/" + UtilFunctions.getCurrentDate() + "-"
+                                                        + dataFile.getName();
+                                        UtilFunctions.moveFile(dataFile.getPath(), destFilePath);
+                                } catch (Exception e) {
+                                        UtilFunctions.mtcnLogger.info(e.getMessage());
+                                }
+                        });
+
+                        UtilFunctions.mtcnLogger.info("Done all the MTCN request files. Rescan later soon.");
+
+                        try {
+                                Thread.sleep(180000);
+                        } catch (InterruptedException e) {
+                                UtilFunctions.mtcnLogger.info(e.getMessage());
+                                return;
+                        }
+                }
+        }
 
-		xmlHandlerAIS = wugwRuntime.getAISAssemblerHandler();
-		xmlHandlerBIS = wugwRuntime.getBISAssemblerHandler();
+        @Override
+        public boolean doService() {
 
-		String inputFolderPath = wugwRuntime.getProperty("MTCN.input.folder");
-		String outputFolderPath = wugwRuntime.getProperty("MTCN.output.folder");
+                smvAISMap = wugwRuntime.getSmvAISMap();
+                smsAISMap = wugwRuntime.getSmsAISMap();
+                smvBISMap = wugwRuntime.getSmvBISMap();
+                smsBISMap = wugwRuntime.getSmsBISMap();
+                fiBISMap = wugwRuntime.getFiBISMap();
+                searchAISMap = wugwRuntime.getSearchAISMap();
+                refundAISMap = wugwRuntime.getRefundAISMap();
 
-		File inputFolder;
-		try {
-			inputFolder = ResourceUtils.getFile(inputFolderPath);
-		} catch (FileNotFoundException e1) {
-			UtilFunctions.loggingException(e1);
-			return true;
-		}
+                xmlHandlerAIS = wugwRuntime.getAISAssemblerHandler();
+                xmlHandlerBIS = wugwRuntime.getBISAssemblerHandler();
 
-		HashMap<String, File> dataFileMap = UtilFunctions.scanFiles(inputFolder);
+                File inputFolder;
+                try {
+                        inputFolder = ResourceUtils.getFile(inputFolderPath);
+                } catch (FileNotFoundException e1) {
+                        UtilFunctions.loggingException(e1);
+                        return true;
+                }
 
-		dataFileMap.forEach((fName, dataFile) -> {
-			try {
-				execute(dataFile);
-				String destFilePath = outputFolderPath + "/" + UtilFunctions.getCurrentDate() + "-"
-						+ dataFile.getName();
-				UtilFunctions.moveFile(dataFile.getPath(), destFilePath);
-			} catch (Exception e) {
-				UtilFunctions.mtcnLogger.info(e.getMessage());
-			}
-		});
+                HashMap<String, File> dataFileMap = UtilFunctions.scanFiles(inputFolder);
 
-		return true;
-	}
+                dataFileMap.forEach((fName, dataFile) -> {
+                        try {
+                                execute(dataFile);
+                                String destFilePath = outputFolderPath + "/" + UtilFunctions.getCurrentDate() + "-"
+                                                + dataFile.getName();
+                                UtilFunctions.moveFile(dataFile.getPath(), destFilePath);
+                        } catch (Exception e) {
+                                UtilFunctions.mtcnLogger.info(e.getMessage());
+                        }
+                });
 
-	private void execute(File dataFile) throws Exception {
+                return true;
+        }
 
-		MTCNExcelDelegator delegator = new MTCNExcelDelegator();
+        private void execute(File dataFile) throws Exception {
 
-		List<Object> dataSet = ExcelFileReader.readFromExcel(dataFile.getPath(), delegator);
+                MTCNExcelDelegator delegator = new MTCNExcelDelegator();
 
-		for (Object sObject : dataSet) {
+                List<Object> dataSet = ExcelFileReader.readFromExcel(dataFile.getPath(), delegator);
 
-			ExcelDataEntry sData = (ExcelDataEntry) sObject;
+                for (Object sObject : dataSet) {
 
-			if (sData != null) {
+                        ExcelDataEntry sData = (ExcelDataEntry) sObject;
 
-				String serviceType = sData.getServiceType();
+                        if (sData != null) {
 
-				if (serviceType.equalsIgnoreCase("Send")) {
+                                String serviceType = sData.getServiceType();
 
-					if (sData.getMTCN() != null && !sData.getMTCN().trim().equals("")) {
+                                if (serviceType.equalsIgnoreCase("Send")) {
 
-						UtilFunctions.mtcnLogger.info("MTCN already created");
+                                        if (sData.getMTCN() != null && !sData.getMTCN().trim().equals("")) {
 
-						continue;
-					}
+                                                UtilFunctions.mtcnLogger.info("MTCN already created");
 
-					this.sendTransaction(sData, false);
+                                                continue;
+                                        }
 
-				} else if (serviceType.equalsIgnoreCase("RefundAll")) {
+                                        this.sendTransaction(sData, false);
 
-					if (// sData.getMTCN() == null
-						// || sData.getMTCN().trim().equals("") ||
-					sData.getAmount() == null || sData.getAmount().trim().equals("") || sData.getFee() == null
-							|| sData.getFee().trim().equals("")) {
-						// ||(sData.getRefundMTCN() != null &&
-						// !sData.getRefundMTCN().trim().equals(""))) {
+                                } else if (serviceType.equalsIgnoreCase("RefundAll")) {
 
-						continue;
-					}
+                                        if (// sData.getMTCN() == null
+                                                // || sData.getMTCN().trim().equals("") ||
+                                        sData.getAmount() == null || sData.getAmount().trim().equals("") || sData.getFee() == null
+                                                        || sData.getFee().trim().equals("")) {
+                                                // ||(sData.getRefundMTCN() != null &&
+                                                // !sData.getRefundMTCN().trim().equals(""))) {
 
-					GeneralName senderName = sData.getSenderName();
-					GeneralName receiverName = sData.getReceiverName();
-					sData.setReceiverName(senderName);
-					sData.setSenderName(receiverName);
+                                                continue;
+                                        }
 
-					CountryCurrencyInfo sCountryCurrency = sData.getSendCountryCurrency();
-					CountryCurrencyInfo pCountryCurrency = sData.getReceiveCountryCurrency();
-					sData.setSendCountryCurrency(pCountryCurrency);
-					sData.setReceiveCountryCurrency(sCountryCurrency);
+                                        GeneralName senderName = sData.getSenderName();
+                                        GeneralName receiverName = sData.getReceiverName();
+                                        sData.setReceiverName(senderName);
+                                        sData.setSenderName(receiverName);
 
-					String amount = sData.getAmount();
-					String feeCharge = sData.getFee();
-					float newAmount = Float.valueOf(amount) + Float.valueOf(feeCharge);
-					sData.setTransactionType("WMF");
+                                        CountryCurrencyInfo sCountryCurrency = sData.getSendCountryCurrency();
+                                        CountryCurrencyInfo pCountryCurrency = sData.getReceiveCountryCurrency();
+                                        sData.setSendCountryCurrency(pCountryCurrency);
+                                        sData.setReceiveCountryCurrency(sCountryCurrency);
 
-					sData.setAmount(String.format("%.2f", newAmount));
+                                        String amount = sData.getAmount();
+                                        String feeCharge = sData.getFee();
+                                        float newAmount = Float.valueOf(amount) + Float.valueOf(feeCharge);
+                                        sData.setTransactionType("WMF");
 
-					this.sendTransaction(sData, true);
+                                        sData.setAmount(String.format("%.2f", newAmount));
 
-					sData.setAmount(amount);
-					sData.setFee(feeCharge);
+                                        this.sendTransaction(sData, true);
 
-				} else if (serviceType.equalsIgnoreCase("Refund")) {
+                                        sData.setAmount(amount);
+                                        sData.setFee(feeCharge);
 
-					if (sData.getMTCN() == null || sData.getMTCN().trim().equals("")
-							|| (sData.getRefundMTCN() != null && !sData.getRefundMTCN().trim().equals(""))) {
+                                } else if (serviceType.equalsIgnoreCase("Refund")) {
 
-						continue;
-					}
+                                        if (sData.getMTCN() == null || sData.getMTCN().trim().equals("")
+                                                        || (sData.getRefundMTCN() != null && !sData.getRefundMTCN().trim().equals(""))) {
 
-					this.refundTransaction(sData);
+                                                continue;
+                                        }
 
-				} else if (serviceType.equalsIgnoreCase("PKPush")) {
-					if (sData.getMTCN() == null || sData.getMTCN().trim().equals("")) {
-						UtilFunctions.mtcnLogger.info("MTCN is empty");
-						continue;
-					}
-					pushMTCNForPK(sData);
-				}
-			}
-		}
+                                        this.refundTransaction(sData);
 
-		ExcelFileUpdator.updateToExcel(dataFile.getPath(), delegator, dataSet);
-	}
+                                } else if (serviceType.equalsIgnoreCase("PKPush")) {
+                                        if (sData.getMTCN() == null || sData.getMTCN().trim().equals("")) {
+                                                UtilFunctions.mtcnLogger.info("MTCN is empty");
+                                                continue;
+                                        }
+                                        pushMTCNForPK(sData);
+                                }
+                        }
+                }
 
-	private void refundTransaction(ExcelDataEntry sData) throws IOException {
+                ExcelFileUpdator.updateToExcel(dataFile.getPath(), delegator, dataSet);
+        }
 
-		String naid = sData.getNaid();
-		String serviceURL = wugwRuntime.getProperty("PI.domain");
+        private void refundTransaction(ExcelDataEntry sData) throws IOException {
 
-		if (searchAISMap.containsKey(naid) && refundAISMap.containsKey(naid)) {
+                String naid = sData.getNaid();
+                String serviceURL = wugwRuntime.getProperty("PI.domain");
 
-			File searchFile = searchAISMap.get(naid);
-			File refundFile = refundAISMap.get(naid);
+                if (searchAISMap.containsKey(naid) && refundAISMap.containsKey(naid)) {
 
-			String searchXMLStr = UtilFunctions.readFileToString(searchFile);
-			String refundXMLStr = UtilFunctions.readFileToString(refundFile);
+                        File searchFile = searchAISMap.get(naid);
+                        File refundFile = refundAISMap.get(naid);
 
-			searchXMLStr = GWMessageAssembleUtils.assembleAISSearchRequestMsg(xmlHandlerAIS, searchXMLStr, sData);
-			String searchReplyStr = UtilFunctions.requestGatewayService(serviceURL, searchXMLStr);
+                        String searchXMLStr = UtilFunctions.readFileToString(searchFile);
+                        String refundXMLStr = UtilFunctions.readFileToString(refundFile);
 
-			if (!searchReplyStr.startsWith("error - ")) {
+                        searchXMLStr = GWMessageAssembleUtils.assembleAISSearchRequestMsg(xmlHandlerAIS, searchXMLStr, sData);
+                        String searchReplyStr = UtilFunctions.requestGatewayService(serviceURL, searchXMLStr);
 
-				refundXMLStr = GWMessageAssembleUtils.assembleAISRefundRequestMsg(xmlHandlerAIS, refundXMLStr,
-						searchReplyStr);
-				String refundReplyStr = UtilFunctions.requestGatewayService(serviceURL, refundXMLStr);
+                        if (!searchReplyStr.startsWith("error - ")) {
 
-				if (!refundReplyStr.startsWith("error - ")) {
+                                refundXMLStr = GWMessageAssembleUtils.assembleAISRefundRequestMsg(xmlHandlerAIS, refundXMLStr,
+                                                searchReplyStr);
+                                String refundReplyStr = UtilFunctions.requestGatewayService(serviceURL, refundXMLStr);
 
-					String replyMTCN = UtilFunctions.retrieveXMLValue(refundReplyStr, "mtcn");
-					UtilFunctions.mtcnLogger.info("MTCN Refund - " + replyMTCN);
-					sData.setRefundMTCN(replyMTCN);
+                                if (!refundReplyStr.startsWith("error - ")) {
 
-				} else {
+                                        String replyMTCN = UtilFunctions.retrieveXMLValue(refundReplyStr, "mtcn");
+                                        UtilFunctions.mtcnLogger.info("MTCN Refund - " + replyMTCN);
+                                        sData.setRefundMTCN(replyMTCN);
 
-					UtilFunctions.mtcnLogger.info("AIS Refund - " + refundReplyStr);
-					sData.setMTCN("AIS Refund " + refundReplyStr);
-				}
+                                } else {
 
-			} else {
+                                        UtilFunctions.mtcnLogger.info("AIS Refund - " + refundReplyStr);
+                                        sData.setMTCN("AIS Refund " + refundReplyStr);
+                                }
 
-				UtilFunctions.mtcnLogger.info("AIS Refund Search - " + searchReplyStr);
-				sData.setMTCN("AIS Refund Search " + searchReplyStr);
-			}
+                        } else {
 
-		} else {
+                                UtilFunctions.mtcnLogger.info("AIS Refund Search - " + searchReplyStr);
+                                sData.setMTCN("AIS Refund Search " + searchReplyStr);
+                        }
 
-			System.out.println("Search or Refund samples does not exist : " + naid);
-		}
-	}
+                } else {
 
-	private void sendTransaction(ExcelDataEntry sData, boolean isRefund) throws IOException {
+                        System.out.println("Search or Refund samples does not exist : " + naid);
+                }
+        }
 
-		String sCountryCode = sData.getSendCountryCurrency().getIsoCode().getCountryCode();
-		String serviceURL = wugwRuntime.getProperty("PI.domain");
+        private void sendTransaction(ExcelDataEntry sData, boolean isRefund) throws IOException {
 
-		if (smvAISMap.containsKey(sCountryCode) && smsAISMap.containsKey(sCountryCode)) {
+                String sCountryCode = sData.getSendCountryCurrency().getIsoCode().getCountryCode();
+                String serviceURL = wugwRuntime.getProperty("PI.domain");
 
-			File smvFile = smvAISMap.get(sCountryCode);
-			File smsFile = smsAISMap.get(sCountryCode);
+                if (smvAISMap.containsKey(sCountryCode) && smsAISMap.containsKey(sCountryCode)) {
 
-			String smvXMLStr = UtilFunctions.readFileToString(smvFile);
-			String smsXMLStr = UtilFunctions.readFileToString(smsFile);
+                        File smvFile = smvAISMap.get(sCountryCode);
+                        File smsFile = smsAISMap.get(sCountryCode);
 
-			smvXMLStr = GWMessageAssembleUtils.assembleAISSMVRequestMsg(xmlHandlerAIS, smvXMLStr, sData);
-			String smvReplyStr = UtilFunctions.requestGatewayService(serviceURL, smvXMLStr);
+                        String smvXMLStr = UtilFunctions.readFileToString(smvFile);
+                        String smsXMLStr = UtilFunctions.readFileToString(smsFile);
 
-			if (!smvReplyStr.startsWith("error - ")) {
+                        smvXMLStr = GWMessageAssembleUtils.assembleAISSMVRequestMsg(xmlHandlerAIS, smvXMLStr, sData);
+                        String smvReplyStr = UtilFunctions.requestGatewayService(serviceURL, smvXMLStr);
 
-				smsXMLStr = GWMessageAssembleUtils.assembleAISSMSRequestMsg(xmlHandlerAIS, smsXMLStr, smvXMLStr,
-						smvReplyStr);
-				String smsReplyStr = UtilFunctions.requestGatewayService(serviceURL, smsXMLStr);
+                        if (!smvReplyStr.startsWith("error - ")) {
 
-				if (!smsReplyStr.startsWith("error - ")) {
+                                smsXMLStr = GWMessageAssembleUtils.assembleAISSMSRequestMsg(xmlHandlerAIS, smsXMLStr, smvXMLStr,
+                                                smvReplyStr);
+                                String smsReplyStr = UtilFunctions.requestGatewayService(serviceURL, smsXMLStr);
 
-					String replyMTCN = UtilFunctions.retrieveXMLValue(smsReplyStr, "mtcn");
+                                if (!smsReplyStr.startsWith("error - ")) {
 
-					String feeCharge = UtilFunctions.retrieveXMLValue(smsReplyStr, "charges");
+                                        String replyMTCN = UtilFunctions.retrieveXMLValue(smsReplyStr, "mtcn");
 
-					UtilFunctions.mtcnLogger.info("MTCN - " + replyMTCN);
+                                        String feeCharge = UtilFunctions.retrieveXMLValue(smsReplyStr, "charges");
 
-					// if(isRefund) {
+                                        UtilFunctions.mtcnLogger.info("MTCN - " + replyMTCN);
 
-					// sData.setRefundMTCN(replyMTCN);
+                                        // if(isRefund) {
 
-					// } else {
+                                        // sData.setRefundMTCN(replyMTCN);
 
-					sData.setMTCN(replyMTCN);
-					// }
+                                        // } else {
 
-					sData.setFee(UtilFunctions.convertToNatureAmount(feeCharge));
+                                        sData.setMTCN(replyMTCN);
+                                        // }
 
-				} else {
+                                        sData.setFee(UtilFunctions.convertToNatureAmount(feeCharge));
 
-					UtilFunctions.mtcnLogger.info("AIS SMS - " + smsReplyStr);
+                                } else {
 
-					sData.setMTCN("AIS SMS " + smsReplyStr);
-				}
+                                        UtilFunctions.mtcnLogger.info("AIS SMS - " + smsReplyStr);
 
-			} else {
+                                        sData.setMTCN("AIS SMS " + smsReplyStr);
+                                }
 
-				UtilFunctions.mtcnLogger.info("AIS SMV - " + smvReplyStr);
+                        } else {
 
-				sData.setMTCN("AIS SMV " + smvReplyStr);
-			}
+                                UtilFunctions.mtcnLogger.info("AIS SMV - " + smvReplyStr);
 
-		} else if (fiBISMap.containsKey(sCountryCode) && smvBISMap.containsKey(sCountryCode)
-				&& smsBISMap.containsKey(sCountryCode)) {
+                                sData.setMTCN("AIS SMV " + smvReplyStr);
+                        }
 
-			File fiFile = fiBISMap.get(sCountryCode);
-			String fiXMLStr = UtilFunctions.readFileToString(fiFile);
+                } else if (fiBISMap.containsKey(sCountryCode) && smvBISMap.containsKey(sCountryCode)
+                                && smsBISMap.containsKey(sCountryCode)) {
 
-			fiXMLStr = GWMessageAssembleUtils.assembleBISFIRequestMsg(xmlHandlerBIS, fiXMLStr, sData);
-			String fiReplyStr = UtilFunctions.requestGatewayService(serviceURL, fiXMLStr);
+                        File fiFile = fiBISMap.get(sCountryCode);
+                        String fiXMLStr = UtilFunctions.readFileToString(fiFile);
 
-			if (!fiReplyStr.startsWith("error - ")) {
+                        fiXMLStr = GWMessageAssembleUtils.assembleBISFIRequestMsg(xmlHandlerBIS, fiXMLStr, sData);
+                        String fiReplyStr = UtilFunctions.requestGatewayService(serviceURL, fiXMLStr);
 
-				File smvFile = smvBISMap.get(sCountryCode);
-				File smsFile = smsBISMap.get(sCountryCode);
+                        if (!fiReplyStr.startsWith("error - ")) {
 
-				String smvXMLStr = UtilFunctions.readFileToString(smvFile);
-				String smsXMLStr = UtilFunctions.readFileToString(smsFile);
+                                File smvFile = smvBISMap.get(sCountryCode);
+                                File smsFile = smsBISMap.get(sCountryCode);
 
-				smvXMLStr = GWMessageAssembleUtils.assembleBISSMVRequestMsg(xmlHandlerBIS, smvXMLStr, sData,
-						fiReplyStr);
-				String smvReplyStr = UtilFunctions.requestGatewayService(serviceURL, smvXMLStr);
+                                String smvXMLStr = UtilFunctions.readFileToString(smvFile);
+                                String smsXMLStr = UtilFunctions.readFileToString(smsFile);
 
-				if (!smvReplyStr.startsWith("error - ")) {
+                                smvXMLStr = GWMessageAssembleUtils.assembleBISSMVRequestMsg(xmlHandlerBIS, smvXMLStr, sData,
+                                                fiReplyStr);
+                                String smvReplyStr = UtilFunctions.requestGatewayService(serviceURL, smvXMLStr);
 
-					smsXMLStr = GWMessageAssembleUtils.assembleBISSMSRequestMsg(xmlHandlerBIS, smsXMLStr, smvXMLStr,
-							smvReplyStr);
-					String smsReplyStr = UtilFunctions.requestGatewayService(serviceURL, smsXMLStr);
+                                if (!smvReplyStr.startsWith("error - ")) {
 
-					if (!smsReplyStr.startsWith("error - ")) {
-						String replyMTCN = UtilFunctions.retrieveXMLValue(smsReplyStr, "mtcn");
-						UtilFunctions.mtcnLogger.info("MTCN - " + replyMTCN);
-						sData.setMTCN(replyMTCN);
-					} else {
-						UtilFunctions.mtcnLogger.info("BIS SMS - " + smsReplyStr);
-						sData.setMTCN("BIS SMS " + smsReplyStr);
-					}
-				} else {
-					UtilFunctions.mtcnLogger.info("BIS SMV - " + smvReplyStr);
-					sData.setMTCN("BIS SMV " + smvReplyStr);
-				}
-			} else {
-				UtilFunctions.mtcnLogger.info("BIS FI - " + fiReplyStr);
-				sData.setMTCN("BIS FI " + fiReplyStr);
-			}
-		} else {
-			System.out.println("SMV or SMS samples does not exist : " + sCountryCode);
-			sData.setMTCN("The sending country/currency is not available for testing");
-		}
+                                        smsXMLStr = GWMessageAssembleUtils.assembleBISSMSRequestMsg(xmlHandlerBIS, smsXMLStr, smvXMLStr,
+                                                        smvReplyStr);
+                                        String smsReplyStr = UtilFunctions.requestGatewayService(serviceURL, smsXMLStr);
 
-		//pushMTCNForPK(sData);
-	}
+                                        if (!smsReplyStr.startsWith("error - ")) {
+                                                String replyMTCN = UtilFunctions.retrieveXMLValue(smsReplyStr, "mtcn");
+                                                UtilFunctions.mtcnLogger.info("MTCN - " + replyMTCN);
+                                                sData.setMTCN(replyMTCN);
+                                        } else {
+                                                UtilFunctions.mtcnLogger.info("BIS SMS - " + smsReplyStr);
+                                                sData.setMTCN("BIS SMS " + smsReplyStr);
+                                        }
+                                } else {
+                                        UtilFunctions.mtcnLogger.info("BIS SMV - " + smvReplyStr);
+                                        sData.setMTCN("BIS SMV " + smvReplyStr);
+                                }
+                        } else {
+                                UtilFunctions.mtcnLogger.info("BIS FI - " + fiReplyStr);
+                                sData.setMTCN("BIS FI " + fiReplyStr);
+                        }
+                } else {
+                        System.out.println("SMV or SMS samples does not exist : " + sCountryCode);
+                        sData.setMTCN("The sending country/currency is not available for testing");
+                }
 
-	private PKMTCNPushService pushService = new PKMTCNPushService();
+                //pushMTCNForPK(sData);
+        }
 
-	private void pushMTCNForPK(ExcelDataEntry sData) {
-		PKJsonTxnObject txnObject = new PKJsonTxnObject();
-		txnObject.getTransaction().setMgiTransactionId(sData.getMTCN());
-		txnObject.getTransaction().getReceiveAmount().setValue(sData.getAmount());
-		//txnObject.getTransaction().setSendCountryCode(sData.getSendCountryCurrency().getIsoCode().getCountryCode());
-		txnObject.getTransaction().getSender().getPerson().setFirstName(sData.getSenderName().getFirstName());
-		txnObject.getTransaction().getSender().getPerson().setLastName(sData.getSenderName().getLastName());
-		txnObject.getTransaction().getSender().getPerson().setMiddleName(sData.getSenderName().getMiddleName());
-		txnObject.getTransaction().getReceiver().getPerson().setFirstName(sData.getReceiverName().getFirstName());
-		txnObject.getTransaction().getReceiver().getPerson().setLastName(sData.getReceiverName().getLastName());
-		txnObject.getTransaction().getReceiver().getPerson().setMiddleName(sData.getReceiverName().getMiddleName());
+        private PKMTCNPushService pushService = new PKMTCNPushService();
 
-		RespBean respBean = pushService.pushMTCN(txnObject);
-		System.out.println("respBean = " + respBean);
-	}
+        private void pushMTCNForPK(ExcelDataEntry sData) {
+                PKJsonTxnObject txnObject = new PKJsonTxnObject();
+                txnObject.getTransaction().setMgiTransactionId(sData.getMTCN());
+                txnObject.getTransaction().getReceiveAmount().setValue(sData.getAmount());
+                //txnObject.getTransaction().setSendCountryCode(sData.getSendCountryCurrency().getIsoCode().getCountryCode());
+                txnObject.getTransaction().getSender().getPerson().setFirstName(sData.getSenderName().getFirstName());
+                txnObject.getTransaction().getSender().getPerson().setLastName(sData.getSenderName().getLastName());
+                txnObject.getTransaction().getSender().getPerson().setMiddleName(sData.getSenderName().getMiddleName());
+                txnObject.getTransaction().getReceiver().getPerson().setFirstName(sData.getReceiverName().getFirstName());
+                txnObject.getTransaction().getReceiver().getPerson().setLastName(sData.getReceiverName().getLastName());
+                txnObject.getTransaction().getReceiver().getPerson().setMiddleName(sData.getReceiverName().getMiddleName());
+
+                RespBean respBean = pushService.pushMTCN(txnObject);
+                System.out.println("respBean = " + respBean);
+        }
 }
