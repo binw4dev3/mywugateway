@@ -7,10 +7,10 @@ import java.util.List;
 
 import com.wu.api.service.MtcnService;
 import com.wu.excel.impl.ExcelFileUpdator;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.EnvironmentAware;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
@@ -23,22 +23,31 @@ import com.wu.gw.util.UtilFunctions;
 /**
  * Console request handler for file-based MTCN batch generation.
  *
- * A @Component with prototype scope — Spring manages the full lifecycle,
- * including @Autowired injection and EnvironmentAware callback.
- * EnvironmentAware is used (instead of @Value) because a custom
- * PropertyPlaceholderConfigurer (XMLAssemblerHandler) is registered in the
- * context and does not load application.properties, making @Value unable to
- * resolve those property keys.
+ * A @Component with prototype scope — Spring manages the full lifecycle
+ * including @Value injection, @Autowired wiring, and @PostConstruct init.
  *
  * For the REST API path, use MtcnController / MtcnService directly.
  */
 @Component
 @Scope("prototype")
-public class GenerateMTCNRequest extends AbstractServiceRequest implements EnvironmentAware {
+public class GenerateMTCNRequest extends AbstractServiceRequest {
 
+    @Value("${GenMTCNRequest.serialNum}")
+    private String requestIDValue;
+
+    @Value("${GenMTCNRequest.description}")
+    private String descriptionValue;
+
+    @Value("${MTCN.input.folder:}")
     private String inputFolderPath;
+
+    @Value("${MTCN.output.folder:}")
     private String outputFolderPath;
+
+    @Value("${MTCN.standalone.input.folder:}")
     private String standaloneInputFolderPath;
+
+    @Value("${MTCN.standalone.output.folder:}")
     private String standaloneOutputFolderPath;
 
     @Autowired
@@ -48,19 +57,10 @@ public class GenerateMTCNRequest extends AbstractServiceRequest implements Envir
         super();
     }
 
-    /**
-     * Called by Spring after the bean is created and all dependencies are wired.
-     * Reads path properties from the Environment, bypassing the
-     * PropertyPlaceholderConfigurer which does not load application.properties.
-     */
-    @Override
-    public void setEnvironment(Environment env) {
-        setRequestID(env.getProperty("GenMTCNRequest.serialNum"));
-        setDescription(env.getProperty("GenMTCNRequest.description"));
-        inputFolderPath           = env.getProperty("MTCN.input.folder", "");
-        outputFolderPath          = env.getProperty("MTCN.output.folder", "");
-        standaloneInputFolderPath  = env.getProperty("MTCN.standalone.input.folder", "");
-        standaloneOutputFolderPath = env.getProperty("MTCN.standalone.output.folder", "");
+    @PostConstruct
+    private void init() {
+        setRequestID(requestIDValue);
+        setDescription(descriptionValue);
     }
 
     /**
