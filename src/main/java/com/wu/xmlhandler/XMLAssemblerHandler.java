@@ -2,25 +2,27 @@ package com.wu.xmlhandler;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Properties;
 
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.DefaultPropertiesPersister;
 import org.springframework.util.PropertiesPersister;
 
 /**
- * Base class that loads XML assembler property files and builds the
- * element/assembler maps consumed at runtime by WUGWRuntime.
+ * Base class that holds the assembled element and assembler maps consumed at
+ * runtime by WUGWRuntime.
  *
- * This class contains all loading and map-building logic.
- * Concrete subclasses (AISAssemblerHandler, BISAssemblerHandler) are the
- * Spring-managed @Component beans; they supply their own resource lists from
- * application.properties and call load() from @PostConstruct.
+ * Two categories of subclass extend this:
+ *
+ *   Leaf handlers (one per property file) — call loadFrom(resourcePath) from
+ *   their @PostConstruct to populate this class's maps from a single classpath
+ *   resource.
+ *
+ *   Composite handlers (AISAssemblerHandler, BISAssemblerHandler) — receive
+ *   the relevant leaf handlers via constructor injection and call mergeFrom()
+ *   to aggregate their maps. They do not load any files directly.
  */
 public class XMLAssemblerHandler {
-
-    private List<Resource> assemberResources;
 
     private HashMap<String, String> elements = new HashMap<>();
 
@@ -29,23 +31,26 @@ public class XMLAssemblerHandler {
     private PropertiesPersister persister = new DefaultPropertiesPersister();
 
     /**
-     * Loads all configured assembler property files and populates the
-     * elements and assemblers maps. Called by each concrete subclass from
-     * its own @PostConstruct method, after assemberResources has been set.
+     * Loads a single classpath property file and populates the elements and
+     * assemblers maps. Called by each leaf-handler subclass from @PostConstruct.
      */
-    protected void load() {
-        if (assemberResources == null) {
-            return;
-        }
+    protected void loadFrom(String resourcePath) {
         try {
             Properties props = new Properties();
-            for (Resource resource : assemberResources) {
-                persister.load(props, resource.getInputStream());
-                buildAssembler(props);
-            }
+            persister.load(props, new ClassPathResource(resourcePath).getInputStream());
+            buildAssembler(props);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+    }
+
+    /**
+     * Copies all elements and assemblers from another handler into this one.
+     * Called by composite-handler subclasses to aggregate leaf-handler maps.
+     */
+    protected void mergeFrom(XMLAssemblerHandler other) {
+        elements.putAll(other.getElements());
+        assemblers.putAll(other.getAssemblers());
     }
 
     private void buildAssembler(Properties props) {
@@ -80,14 +85,6 @@ public class XMLAssemblerHandler {
                 }
             }
         }
-    }
-
-    public List<Resource> getAssemberResources() {
-        return assemberResources;
-    }
-
-    public void setAssemberResources(List<Resource> assemberResources) {
-        this.assemberResources = assemberResources;
     }
 
     public HashMap<String, String> getElements() {

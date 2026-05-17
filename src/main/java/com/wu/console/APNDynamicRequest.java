@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.wu.config.ApplicationContextProvider;
-import org.springframework.core.env.Environment;
+import jakarta.annotation.PostConstruct;
 import com.wu.web.model.Bank;
 import com.wu.web.model.Branch;
 import com.wu.web.service.BankService;
@@ -72,20 +72,22 @@ public class APNDynamicRequest extends AbstractServiceRequest {
         
         private String prefix = "----";
 
-/*      public APNDynamicRequest() {
-                super();
-        }*/
+        @Value("${APNDynamicRequest.serialNum}")
+        private String requestIDValue;
 
-        public APNDynamicRequest(BankService bankService, BranchService branchService, Environment environment) {
+        @Value("${APNDynamicRequest.description}")
+        private String descriptionValue;
+
+        public APNDynamicRequest(BankService bankService, BranchService branchService) {
                 super();
                 this.bankService = bankService;
                 this.branchService = branchService;
+        }
 
-                this.setRequestID(environment.getProperty("APNDynamicRequest.serialNum"));
-                this.setDescription(environment.getProperty("APNDynamicRequest.description"));
-
-                String requestID1 = this.getRequestID();
-                System.out.println("requestID1 = " + requestID1);
+        @PostConstruct
+        private void init() {
+                setRequestID(requestIDValue);
+                setDescription(descriptionValue);
         }
 
         @Override

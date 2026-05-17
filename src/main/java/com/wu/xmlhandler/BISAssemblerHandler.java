@@ -1,35 +1,27 @@
 package com.wu.xmlhandler;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
- * Spring-managed XML assembler handler for the BIS (Bank Interface System)
- * gateway integration.
+ * Composite handler for the BIS (Bank Interface System) gateway integration.
  *
- * Resource paths are declared in application.properties under the key
- * BIS.assembler.resources (comma-separated list of classpath locations).
- * Spring injects them as a List<String>; each entry is wrapped in a
- * ClassPathResource and the files are loaded in @PostConstruct.
+ * Does not load any files directly. Instead it receives the two BIS-related
+ * leaf handlers via constructor injection — Spring guarantees each leaf is
+ * fully initialized (including @PostConstruct) before being injected here —
+ * and merges their element/assembler maps into this bean's own maps.
+ *
+ * WUGWRuntime receives this bean as its BISAssemblerHandler.
  */
 @Component("BISAssemblerHandler")
 public class BISAssemblerHandler extends XMLAssemblerHandler {
 
-    @Value("${BIS.assembler.resources}")
-    private List<String> resourcePaths;
-
-    @PostConstruct
-    public void init() {
-        setAssemberResources(
-            resourcePaths.stream()
-                .map(ClassPathResource::new)
-                .collect(Collectors.toList())
-        );
-        load();
+    @Autowired
+    public BISAssemblerHandler(
+            @Qualifier("sendBISHandler") XMLAssemblerHandler sendBIS,
+            @Qualifier("dasHandler") XMLAssemblerHandler das) {
+        mergeFrom(sendBIS);
+        mergeFrom(das);
     }
 }
