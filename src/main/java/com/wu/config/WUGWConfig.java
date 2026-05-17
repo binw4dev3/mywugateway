@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.wu.api.service.MtcnService;
 import com.wu.console.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -142,10 +143,11 @@ public class WUGWConfig implements EnvironmentAware {
 
         @Bean
         @Scope("prototype")
-        public GenerateMTCNRequest genMTCNRequest() {
+        public GenerateMTCNRequest genMTCNRequest(MtcnService mtcnService) {
                 GenerateMTCNRequest genMTCNRequest = new GenerateMTCNRequest();
                 genMTCNRequest.setRequestID(environment.getProperty("GenMTCNRequest.serialNum"));
                 genMTCNRequest.setDescription(environment.getProperty("GenMTCNRequest.description"));
+                genMTCNRequest.setMtcnService(mtcnService);
                 return genMTCNRequest;
         }
 
