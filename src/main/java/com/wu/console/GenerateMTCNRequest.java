@@ -62,6 +62,10 @@ public class GenerateMTCNRequest extends AbstractServiceRequest {
             UtilFunctions.mtcnLogger.info("MTCN.standalone.input.folder is not configured; standalone runner will not start.");
             return;
         }
+        if (standaloneOutputFolderPath == null || standaloneOutputFolderPath.isBlank()) {
+            UtilFunctions.mtcnLogger.info("MTCN.standalone.output.folder is not configured; standalone runner will not start.");
+            return;
+        }
 
         File inputFolder;
         try {
@@ -74,6 +78,11 @@ public class GenerateMTCNRequest extends AbstractServiceRequest {
         if (!inputFolder.exists() || !inputFolder.isDirectory()) {
             UtilFunctions.mtcnLogger.info("Standalone input folder does not exist: " + standaloneInputFolderPath + "; standalone runner will not start.");
             return;
+        }
+
+        File standaloneOutputFolder = new File(standaloneOutputFolderPath);
+        if (!standaloneOutputFolder.exists()) {
+            standaloneOutputFolder.mkdirs();
         }
 
         while (true) {
@@ -112,11 +121,20 @@ public class GenerateMTCNRequest extends AbstractServiceRequest {
             UtilFunctions.mtcnLogger.info("MTCN.input.folder is not configured; skipping batch file processing.");
             return true;
         }
+        if (outputFolderPath == null || outputFolderPath.isBlank()) {
+            UtilFunctions.mtcnLogger.info("MTCN.output.folder is not configured; skipping batch file processing.");
+            return true;
+        }
 
         File inputFolder = new File(inputFolderPath);
         if (!inputFolder.exists() || !inputFolder.isDirectory()) {
             UtilFunctions.mtcnLogger.info("MTCN input folder does not exist: " + inputFolderPath + "; skipping batch file processing.");
             return true;
+        }
+
+        File outputFolder = new File(outputFolderPath);
+        if (!outputFolder.exists()) {
+            outputFolder.mkdirs();
         }
 
         HashMap<String, File> dataFileMap = UtilFunctions.scanFiles(inputFolder);
