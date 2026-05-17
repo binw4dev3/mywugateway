@@ -14,6 +14,7 @@ import com.wu.web.model.RespBean;
 import com.wu.xmlhandler.GWMessageAssembleUtils;
 import com.wu.xmlhandler.XMLAssemblerHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -50,6 +51,7 @@ public class MtcnService {
     private final Random random = new Random();
     private final PKMTCNPushService pkPushService = new PKMTCNPushService();
 
+    @Lazy
     @Autowired
     private WUGWRuntime wugwRuntime;
 

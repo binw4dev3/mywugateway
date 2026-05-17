@@ -234,9 +234,9 @@ public class WUGWConfig implements EnvironmentAware {
 
         @Bean
         @Scope("prototype")
-        public HashMap<String, AbstractServiceRequest> requestMap(APNDynamicRequest apnDynamicRequest) {
+        public HashMap<String, AbstractServiceRequest> requestMap(APNDynamicRequest apnDynamicRequest, MtcnService mtcnService) {
                 HashMap<String, AbstractServiceRequest> requestMap = new HashMap<String, AbstractServiceRequest>();
-                requestMap.put(environment.getProperty("GenMTCNRequest.serialNum"), genMTCNRequest());
+                requestMap.put(environment.getProperty("GenMTCNRequest.serialNum"), genMTCNRequest(mtcnService));
                 requestMap.put(environment.getProperty("CountryCurrencyListRequest.serialNum"), countryCurrencyListRequest());
                 requestMap.put(environment.getProperty("USStateListRequest.serialNum"), usStateListRequest());
                 requestMap.put(environment.getProperty("MexicoCityStateRequest.serialNum"), mexicoCityStateRequest());
