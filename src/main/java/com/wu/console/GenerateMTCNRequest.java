@@ -29,7 +29,7 @@ import com.wu.gw.util.UtilFunctions;
  * For the REST API path, use MtcnController / MtcnService directly.
  */
 @Component
-@Scope("prototype")
+@Scope("singleton")
 public class GenerateMTCNRequest extends AbstractServiceRequest {
 
     @Value("${GenMTCNRequest.serialNum}")

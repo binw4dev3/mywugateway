@@ -23,13 +23,15 @@ public class MtcnApiService {
     @Autowired
     private WUGWRuntime wugwRuntime;
 
+    @Autowired
+    private GenerateMTCNRequest generateMTCNRequest;
+
     /**
      * Trigger a single batch run of the MTCN generator.
      * @return count of Excel files processed in this run.
      */
     public int triggerBatch() {
-        GenerateMTCNRequest request = new GenerateMTCNRequest();
-        request.serve(wugwRuntime);
+        generateMTCNRequest.serve(wugwRuntime);
         // The actual file count is not exposed by GenerateMTCNRequest;
         // return -1 to signal "ran successfully, check output folder for results".
         return -1;
