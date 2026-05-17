@@ -1,18 +1,17 @@
 package com.wu.config;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 
 import com.wu.console.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.wu.WUGWRuntime;
 import com.wu.gw.model.WUTransaction;
@@ -25,322 +24,259 @@ import com.wu.gw.service.GetUSStateList;
 import com.wu.xmlhandler.XMLAssemblerHandler;
 
 @Configuration
-//@PropertySource("classpath:/properties/ServiceConsolerBanner.properties")
-public class WUGWConfig {
-	
-	/*@Value("${CountryCurrencyListRequest.dasName}")
-	private String dasNameCountryCurrencyListRequest;
-	
-	@Value("${USStateListRequest.dasName}")
-	private String dasNameUSStateListRequest;
-	
-	@Value("${MexicoCityStateRequest.dasName}")
-	private String dasNameMexicoCityStateRequest;*/
-	
-	private static Properties props;
-	
-	public WUGWConfig() throws IOException {
-		if(props == null) {
-			Resource resource = new ClassPathResource("/properties/ServiceConsolerBanner.properties");
-			props = PropertiesLoaderUtils.loadProperties(resource);
-		}
-	}
+public class WUGWConfig implements EnvironmentAware {
 
-	public static Properties getProps() {
-		if(props == null) {
-			Resource resource = new ClassPathResource("/properties/ServiceConsolerBanner.properties");
-            try {
-                props = PropertiesLoaderUtils.loadProperties(resource);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        private Environment environment;
+
+        @Override
+        public void setEnvironment(Environment environment) {
+                this.environment = environment;
         }
 
-		return props;
-	}
-	
-	@Bean
-	@Scope("singleton")
-	public GetCountriesCurrencies getCountriesCurrencies() {
-		return new GetCountriesCurrencies();
-	}
-	
-	@Bean
-	@Scope("singleton")
-	public GetUSStateList getUSStateList() {
-		return new GetUSStateList();
-	}
-	
-	@Bean
-	@Scope("singleton")
-	public GetMexicoCityState getMexicoCityState() {
-		return new GetMexicoCityState();
-	}
-	
-	@Bean
-	@Scope("singleton")
-	public GetDeliveryServices getDeliveryServices() {
-		return new GetDeliveryServices();
-	}
-	
-	@Bean
-	@Scope("singleton")
-	public GetDeliveryOptionTemplate getDeliveryOptionTemplate() {
-		return new GetDeliveryOptionTemplate();
-	}
-	
-	@Bean
-	@Scope("singleton")
-	public GetCascadeList getCascadeList() {
-		return new GetCascadeList();
-	}
-	
-	@Bean
-	@Scope("prototype")
-	public WUTransaction countriesCurrencies() {
-		WUTransaction cc = new WUTransaction();
-		
-		cc.setDasName(props.getProperty("CountryCurrencyListRequest.dasName"));
-		HashMap<String, String> dasFilters = new HashMap<String, String>();
-		dasFilters.put("queryfilter3", "");
-		dasFilters.put("queryfilter4", "");
-		cc.setDasFilters(dasFilters);
-		
-		return cc;
-	}
-	
-	@Bean
-	@Scope("prototype")
-	public WUTransaction usStateInfo() {
-		WUTransaction cc = new WUTransaction();
-		
-		cc.setDasName(props.getProperty("USStateListRequest.dasName"));
-		HashMap<String, String> dasFilters = new HashMap<String, String>();
-		dasFilters.put("queryfilter2", "");
-		cc.setDasFilters(dasFilters);
-		
-		return cc;
-	}
-	
-	@Bean
-	@Scope("prototype")
-	public WUTransaction mexicoCityState() {
-		WUTransaction cc = new WUTransaction();
-		
-		cc.setDasName(props.getProperty("MexicoCityStateRequest.dasName"));
-		HashMap<String, String> dasFilters = new HashMap<String, String>();
-		dasFilters.put("queryfilter2", "");
-		dasFilters.put("queryfilter3", "");
-		cc.setDasFilters(dasFilters);
-		
-		return cc;
-	}
-	
-	@Bean
-	@Scope("prototype")
-	public WUTransaction deliveryServices() {
-		WUTransaction cc = new WUTransaction();
-		
-		cc.setDasName("GetDeliveryServices");
-		HashMap<String, String> dasFilters = new HashMap<String, String>();
-		dasFilters.put("queryfilter3", "");
-		dasFilters.put("queryfilter4", "");
-		cc.setDasFilters(dasFilters);
-		
-		return cc;
-	}
-	
-	@Bean
-	@Scope("prototype")
-	public WUTransaction deliveryOptionTemplate() {
-		WUTransaction cc = new WUTransaction();
-		
-		cc.setDasName("GetDeliveryOptionTemplate");
-		HashMap<String, String> dasFilters = new HashMap<String, String>();
-		dasFilters.put("queryfilter2", "");
-		dasFilters.put("queryfilter3", "");
-		dasFilters.put("queryfilter4", "");
-		cc.setDasFilters(dasFilters);
-		
-		return cc;
-	}
-	
-	@Bean
-	@Scope("prototype")
-	public WUTransaction cascadeList() {
-		WUTransaction cc = new WUTransaction();
-		
-		cc.setDasName("GetCascadeList");
-		HashMap<String, String> dasFilters = new HashMap<String, String>();
-		dasFilters.put("queryfilter2", "");
-		cc.setDasFilters(dasFilters);
-		
-		return cc;
-	}
-	
-	@Bean
-	@Scope("prototype")
-	public GenerateMTCNRequest genMTCNRequest() {
-		GenerateMTCNRequest genMTCNRequest = new GenerateMTCNRequest();
-		
-		genMTCNRequest.setRequestID(props.getProperty("GenMTCNRequest.serialNum"));
-		genMTCNRequest.setDescription(props.getProperty("GenMTCNRequest.description"));
-		
-		return genMTCNRequest;
-	}
-	
-	@Bean
-	@Scope("prototype")
-	public DASServiceRequest usStateListRequest() {
-		DASServiceRequest usStateListRequest = new DASServiceRequest();
-		
-		usStateListRequest.setRequestID(props.getProperty("USStateListRequest.serialNum"));
-		usStateListRequest.setDescription(props.getProperty("USStateListRequest.description"));
-		usStateListRequest.setDasName(props.getProperty("USStateListRequest.dasName"));
-		usStateListRequest.setTxnData(usStateInfo());
-		usStateListRequest.setDasService(getUSStateList());
-		
-		return usStateListRequest;
-	}
-	
-	@Bean
-	@Scope("prototype")
-	public DASServiceRequest countryCurrencyListRequest() {
-		DASServiceRequest countryCurrencyListRequest = new DASServiceRequest();
-		
-		countryCurrencyListRequest.setRequestID(props.getProperty("CountryCurrencyListRequest.serialNum"));
-		countryCurrencyListRequest.setDescription(props.getProperty("CountryCurrencyListRequest.description"));
-		countryCurrencyListRequest.setDasName(props.getProperty("CountryCurrencyListRequest.dasName"));
-		countryCurrencyListRequest.setTxnData(countriesCurrencies());
-		countryCurrencyListRequest.setDasService(getCountriesCurrencies());
-		
-		return countryCurrencyListRequest;
-	}
-	
-	@Bean
-	@Scope("prototype")
-	public DASServiceRequest mexicoCityStateRequest() {
-		DASServiceRequest mexicoCityStateRequest = new DASServiceRequest();
-		
-		mexicoCityStateRequest.setRequestID(props.getProperty("MexicoCityStateRequest.serialNum"));
-		mexicoCityStateRequest.setDescription(props.getProperty("MexicoCityStateRequest.description"));
-		mexicoCityStateRequest.setDasName(props.getProperty("MexicoCityStateRequest.dasName"));
-		mexicoCityStateRequest.setTxnData(mexicoCityState());
-		mexicoCityStateRequest.setDasService(getMexicoCityState());
-		
-		return mexicoCityStateRequest;
-	}
-	
-	/*@Bean
-	@Scope("prototype")
-	public APNDynamicRequest apnDynamicRequest() {
-		APNDynamicRequest apnDynamicRequest = new APNDynamicRequest();
-		
-		apnDynamicRequest.setRequestID(props.getProperty("APNDynamicRequest.serialNum"));
-		apnDynamicRequest.setDescription(props.getProperty("APNDynamicRequest.description"));
-		
-		return apnDynamicRequest;
-	}*/
-	
-	@Bean
-	@Scope("prototype")
-	public PricingTableRequest pricingTableRequest() {
-		PricingTableRequest pricingTableRequest = new PricingTableRequest();
-		
-		pricingTableRequest.setRequestID(props.getProperty("PricingTableRequest.serialNum"));
-		pricingTableRequest.setDescription(props.getProperty("PricingTableRequest.description"));
-		
-		return pricingTableRequest;
-	}
-	
-	@Bean
-	@Scope("prototype")
-	public DeliveryServiceListRequest deliveryServiceListRequest() {
-		DeliveryServiceListRequest deliveryServiceListRequest = new DeliveryServiceListRequest();
-		
-		deliveryServiceListRequest.setRequestID(props.getProperty("DeliveryServiceListRequest.serialNum"));
-		deliveryServiceListRequest.setDescription(props.getProperty("DeliveryServiceListRequest.description"));
-		
-		return deliveryServiceListRequest;
-	}
+        @Bean
+        @Scope("singleton")
+        public GetCountriesCurrencies getCountriesCurrencies() {
+                return new GetCountriesCurrencies();
+        }
 
-	@Bean
-	@Scope("prototype")
-	public APNDataScopeRequest apnDataScopeRequest() {
-		APNDataScopeRequest apnDataScopeRequest = new APNDataScopeRequest();
+        @Bean
+        @Scope("singleton")
+        public GetUSStateList getUSStateList() {
+                return new GetUSStateList();
+        }
 
-		apnDataScopeRequest.setRequestID(props.getProperty("APNDataScopeRequest.serialNum"));
-		apnDataScopeRequest.setDescription(props.getProperty("APNDataScopeRequest.description"));
+        @Bean
+        @Scope("singleton")
+        public GetMexicoCityState getMexicoCityState() {
+                return new GetMexicoCityState();
+        }
 
-		return apnDataScopeRequest;
-	}
-	
-	@Bean
-	@Scope("prototype")
-	public ExitRequest exitRequest() {
-		ExitRequest exitRequest = new ExitRequest();
-		
-		exitRequest.setRequestID(props.getProperty("ExitRequest.serialNum"));
-		exitRequest.setDescription(props.getProperty("ExitRequest.description"));
-		
-		return exitRequest;
-	}
-	
-	@Bean
-	@Scope("prototype")
-	public HashMap<String, AbstractServiceRequest> requestMap(APNDynamicRequest apnDynamicRequest) {
-		HashMap<String, AbstractServiceRequest> requestMap = new HashMap<String, AbstractServiceRequest>();
-		
-		requestMap.put(props.getProperty("GenMTCNRequest.serialNum"), genMTCNRequest());
-		requestMap.put(props.getProperty("CountryCurrencyListRequest.serialNum"), countryCurrencyListRequest());
-		requestMap.put(props.getProperty("USStateListRequest.serialNum"), usStateListRequest());
-		requestMap.put(props.getProperty("MexicoCityStateRequest.serialNum"), mexicoCityStateRequest());
-		requestMap.put(props.getProperty("APNDynamicRequest.serialNum"), apnDynamicRequest);
-		requestMap.put(props.getProperty("PricingTableRequest.serialNum"), pricingTableRequest());
-		requestMap.put(props.getProperty("DeliveryServiceListRequest.serialNum"), deliveryServiceListRequest());
-		requestMap.put(props.getProperty("APNDataScopeRequest.serialNum"), apnDataScopeRequest());
-		requestMap.put(props.getProperty("ExitRequest.serialNum"), exitRequest());
-		
-		return requestMap;
-	}
-	
-	@Bean
-	@Scope("singleton")
-	public XMLAssemblerHandler AISAssemblerHandler() {
-		XMLAssemblerHandler handler = new XMLAssemblerHandler();
-		
-		List<Resource> assemblers = new ArrayList<>();
-		assemblers.add(new ClassPathResource("/properties/XMLAssembler-Send-AIS.properties"));
-		assemblers.add(new ClassPathResource("/properties/XMLAssembler-CSCFunc-AIS.properties"));
-		assemblers.add(new ClassPathResource("/properties/XMLAssembler-DAS.properties"));
-		handler.setAssemberResources(assemblers);
-		
-		return handler;
-	}
-	
-	@Bean
-	@Scope("singleton")
-	public XMLAssemblerHandler BISAssemblerHandler() {
-		XMLAssemblerHandler handler = new XMLAssemblerHandler();
+        @Bean
+        @Scope("singleton")
+        public GetDeliveryServices getDeliveryServices() {
+                return new GetDeliveryServices();
+        }
 
-		List<Resource> assemblers = new ArrayList<>();
-		assemblers.add(new ClassPathResource("/properties/XMLAssembler-Send-BIS.properties"));
-		assemblers.add(new ClassPathResource("/properties/XMLAssembler-DAS.properties"));
-		handler.setAssemberResources(assemblers);
-		
-		return handler;
-	}
-	
-	@Bean
-	@Scope("singleton")
-	public WUGWRuntime WUGWRuntime(XMLAssemblerHandler AISAssemblerHandler, 
-			XMLAssemblerHandler BISAssemblerHandler, HashMap<String, AbstractServiceRequest> requestMap) {
-		WUGWRuntime runtime = new WUGWRuntime();
-		
-		runtime.setRequestMap(requestMap);
-		runtime.setAISAssemblerHandler(AISAssemblerHandler);
-		runtime.setBISAssemblerHandler(BISAssemblerHandler);
-		
-		return runtime;
-	}
+        @Bean
+        @Scope("singleton")
+        public GetDeliveryOptionTemplate getDeliveryOptionTemplate() {
+                return new GetDeliveryOptionTemplate();
+        }
+
+        @Bean
+        @Scope("singleton")
+        public GetCascadeList getCascadeList() {
+                return new GetCascadeList();
+        }
+
+        @Bean
+        @Scope("prototype")
+        public WUTransaction countriesCurrencies() {
+                WUTransaction cc = new WUTransaction();
+                cc.setDasName(environment.getProperty("CountryCurrencyListRequest.dasName"));
+                HashMap<String, String> dasFilters = new HashMap<String, String>();
+                dasFilters.put("queryfilter3", "");
+                dasFilters.put("queryfilter4", "");
+                cc.setDasFilters(dasFilters);
+                return cc;
+        }
+
+        @Bean
+        @Scope("prototype")
+        public WUTransaction usStateInfo() {
+                WUTransaction cc = new WUTransaction();
+                cc.setDasName(environment.getProperty("USStateListRequest.dasName"));
+                HashMap<String, String> dasFilters = new HashMap<String, String>();
+                dasFilters.put("queryfilter2", "");
+                cc.setDasFilters(dasFilters);
+                return cc;
+        }
+
+        @Bean
+        @Scope("prototype")
+        public WUTransaction mexicoCityState() {
+                WUTransaction cc = new WUTransaction();
+                cc.setDasName(environment.getProperty("MexicoCityStateRequest.dasName"));
+                HashMap<String, String> dasFilters = new HashMap<String, String>();
+                dasFilters.put("queryfilter2", "");
+                dasFilters.put("queryfilter3", "");
+                cc.setDasFilters(dasFilters);
+                return cc;
+        }
+
+        @Bean
+        @Scope("prototype")
+        public WUTransaction deliveryServices() {
+                WUTransaction cc = new WUTransaction();
+                cc.setDasName("GetDeliveryServices");
+                HashMap<String, String> dasFilters = new HashMap<String, String>();
+                dasFilters.put("queryfilter3", "");
+                dasFilters.put("queryfilter4", "");
+                cc.setDasFilters(dasFilters);
+                return cc;
+        }
+
+        @Bean
+        @Scope("prototype")
+        public WUTransaction deliveryOptionTemplate() {
+                WUTransaction cc = new WUTransaction();
+                cc.setDasName("GetDeliveryOptionTemplate");
+                HashMap<String, String> dasFilters = new HashMap<String, String>();
+                dasFilters.put("queryfilter2", "");
+                dasFilters.put("queryfilter3", "");
+                dasFilters.put("queryfilter4", "");
+                cc.setDasFilters(dasFilters);
+                return cc;
+        }
+
+        @Bean
+        @Scope("prototype")
+        public WUTransaction cascadeList() {
+                WUTransaction cc = new WUTransaction();
+                cc.setDasName("GetCascadeList");
+                HashMap<String, String> dasFilters = new HashMap<String, String>();
+                dasFilters.put("queryfilter2", "");
+                cc.setDasFilters(dasFilters);
+                return cc;
+        }
+
+        @Bean
+        @Scope("prototype")
+        public GenerateMTCNRequest genMTCNRequest() {
+                GenerateMTCNRequest genMTCNRequest = new GenerateMTCNRequest();
+                genMTCNRequest.setRequestID(environment.getProperty("GenMTCNRequest.serialNum"));
+                genMTCNRequest.setDescription(environment.getProperty("GenMTCNRequest.description"));
+                return genMTCNRequest;
+        }
+
+        @Bean
+        @Scope("prototype")
+        public DASServiceRequest usStateListRequest() {
+                DASServiceRequest usStateListRequest = new DASServiceRequest();
+                usStateListRequest.setRequestID(environment.getProperty("USStateListRequest.serialNum"));
+                usStateListRequest.setDescription(environment.getProperty("USStateListRequest.description"));
+                usStateListRequest.setDasName(environment.getProperty("USStateListRequest.dasName"));
+                usStateListRequest.setTxnData(usStateInfo());
+                usStateListRequest.setDasService(getUSStateList());
+                return usStateListRequest;
+        }
+
+        @Bean
+        @Scope("prototype")
+        public DASServiceRequest countryCurrencyListRequest() {
+                DASServiceRequest countryCurrencyListRequest = new DASServiceRequest();
+                countryCurrencyListRequest.setRequestID(environment.getProperty("CountryCurrencyListRequest.serialNum"));
+                countryCurrencyListRequest.setDescription(environment.getProperty("CountryCurrencyListRequest.description"));
+                countryCurrencyListRequest.setDasName(environment.getProperty("CountryCurrencyListRequest.dasName"));
+                countryCurrencyListRequest.setTxnData(countriesCurrencies());
+                countryCurrencyListRequest.setDasService(getCountriesCurrencies());
+                return countryCurrencyListRequest;
+        }
+
+        @Bean
+        @Scope("prototype")
+        public DASServiceRequest mexicoCityStateRequest() {
+                DASServiceRequest mexicoCityStateRequest = new DASServiceRequest();
+                mexicoCityStateRequest.setRequestID(environment.getProperty("MexicoCityStateRequest.serialNum"));
+                mexicoCityStateRequest.setDescription(environment.getProperty("MexicoCityStateRequest.description"));
+                mexicoCityStateRequest.setDasName(environment.getProperty("MexicoCityStateRequest.dasName"));
+                mexicoCityStateRequest.setTxnData(mexicoCityState());
+                mexicoCityStateRequest.setDasService(getMexicoCityState());
+                return mexicoCityStateRequest;
+        }
+
+        /*@Bean
+        @Scope("prototype")
+        public APNDynamicRequest apnDynamicRequest() {
+                APNDynamicRequest apnDynamicRequest = new APNDynamicRequest();
+                apnDynamicRequest.setRequestID(environment.getProperty("APNDynamicRequest.serialNum"));
+                apnDynamicRequest.setDescription(environment.getProperty("APNDynamicRequest.description"));
+                return apnDynamicRequest;
+        }*/
+
+        @Bean
+        @Scope("prototype")
+        public PricingTableRequest pricingTableRequest() {
+                PricingTableRequest pricingTableRequest = new PricingTableRequest();
+                pricingTableRequest.setRequestID(environment.getProperty("PricingTableRequest.serialNum"));
+                pricingTableRequest.setDescription(environment.getProperty("PricingTableRequest.description"));
+                return pricingTableRequest;
+        }
+
+        @Bean
+        @Scope("prototype")
+        public DeliveryServiceListRequest deliveryServiceListRequest() {
+                DeliveryServiceListRequest deliveryServiceListRequest = new DeliveryServiceListRequest();
+                deliveryServiceListRequest.setRequestID(environment.getProperty("DeliveryServiceListRequest.serialNum"));
+                deliveryServiceListRequest.setDescription(environment.getProperty("DeliveryServiceListRequest.description"));
+                return deliveryServiceListRequest;
+        }
+
+        @Bean
+        @Scope("prototype")
+        public APNDataScopeRequest apnDataScopeRequest() {
+                APNDataScopeRequest apnDataScopeRequest = new APNDataScopeRequest();
+                apnDataScopeRequest.setRequestID(environment.getProperty("APNDataScopeRequest.serialNum"));
+                apnDataScopeRequest.setDescription(environment.getProperty("APNDataScopeRequest.description"));
+                return apnDataScopeRequest;
+        }
+
+        @Bean
+        @Scope("prototype")
+        public ExitRequest exitRequest() {
+                ExitRequest exitRequest = new ExitRequest();
+                exitRequest.setRequestID(environment.getProperty("ExitRequest.serialNum"));
+                exitRequest.setDescription(environment.getProperty("ExitRequest.description"));
+                return exitRequest;
+        }
+
+        @Bean
+        @Scope("prototype")
+        public HashMap<String, AbstractServiceRequest> requestMap(APNDynamicRequest apnDynamicRequest) {
+                HashMap<String, AbstractServiceRequest> requestMap = new HashMap<String, AbstractServiceRequest>();
+                requestMap.put(environment.getProperty("GenMTCNRequest.serialNum"), genMTCNRequest());
+                requestMap.put(environment.getProperty("CountryCurrencyListRequest.serialNum"), countryCurrencyListRequest());
+                requestMap.put(environment.getProperty("USStateListRequest.serialNum"), usStateListRequest());
+                requestMap.put(environment.getProperty("MexicoCityStateRequest.serialNum"), mexicoCityStateRequest());
+                requestMap.put(environment.getProperty("APNDynamicRequest.serialNum"), apnDynamicRequest);
+                requestMap.put(environment.getProperty("PricingTableRequest.serialNum"), pricingTableRequest());
+                requestMap.put(environment.getProperty("DeliveryServiceListRequest.serialNum"), deliveryServiceListRequest());
+                requestMap.put(environment.getProperty("APNDataScopeRequest.serialNum"), apnDataScopeRequest());
+                requestMap.put(environment.getProperty("ExitRequest.serialNum"), exitRequest());
+                return requestMap;
+        }
+
+        @Bean
+        @Scope("singleton")
+        public XMLAssemblerHandler AISAssemblerHandler() {
+                XMLAssemblerHandler handler = new XMLAssemblerHandler();
+                List<Resource> assemblers = new ArrayList<>();
+                assemblers.add(new ClassPathResource("/properties/XMLAssembler-Send-AIS.properties"));
+                assemblers.add(new ClassPathResource("/properties/XMLAssembler-CSCFunc-AIS.properties"));
+                assemblers.add(new ClassPathResource("/properties/XMLAssembler-DAS.properties"));
+                handler.setAssemberResources(assemblers);
+                return handler;
+        }
+
+        @Bean
+        @Scope("singleton")
+        public XMLAssemblerHandler BISAssemblerHandler() {
+                XMLAssemblerHandler handler = new XMLAssemblerHandler();
+                List<Resource> assemblers = new ArrayList<>();
+                assemblers.add(new ClassPathResource("/properties/XMLAssembler-Send-BIS.properties"));
+                assemblers.add(new ClassPathResource("/properties/XMLAssembler-DAS.properties"));
+                handler.setAssemberResources(assemblers);
+                return handler;
+        }
+
+        @Bean
+        @Scope("singleton")
+        public WUGWRuntime WUGWRuntime(XMLAssemblerHandler AISAssemblerHandler,
+                        XMLAssemblerHandler BISAssemblerHandler, HashMap<String, AbstractServiceRequest> requestMap) {
+                WUGWRuntime runtime = new WUGWRuntime();
+                runtime.setRequestMap(requestMap);
+                runtime.setAISAssemblerHandler(AISAssemblerHandler);
+                runtime.setBISAssemblerHandler(BISAssemblerHandler);
+                return runtime;
+        }
 }
