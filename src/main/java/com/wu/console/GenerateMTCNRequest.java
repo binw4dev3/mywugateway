@@ -58,11 +58,21 @@ public class GenerateMTCNRequest extends AbstractServiceRequest {
     public void runServiceStandalone(WUGWRuntime wugwRuntime) {
         this.wugwRuntime = wugwRuntime;
 
+        if (standaloneInputFolderPath == null || standaloneInputFolderPath.isBlank()) {
+            UtilFunctions.mtcnLogger.info("MTCN.standalone.input.folder is not configured; standalone runner will not start.");
+            return;
+        }
+
         File inputFolder;
         try {
             inputFolder = ResourceUtils.getFile(standaloneInputFolderPath);
         } catch (FileNotFoundException e) {
-            UtilFunctions.loggingException(e);
+            UtilFunctions.mtcnLogger.info("Standalone input folder not found: " + standaloneInputFolderPath + "; standalone runner will not start.");
+            return;
+        }
+
+        if (!inputFolder.exists() || !inputFolder.isDirectory()) {
+            UtilFunctions.mtcnLogger.info("Standalone input folder does not exist: " + standaloneInputFolderPath + "; standalone runner will not start.");
             return;
         }
 
